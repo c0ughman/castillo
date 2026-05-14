@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact — Castillo Arquitectos</title>
+    <meta name="description" content="Castillo Arquitectos works with a selective group of clients. If you have a project in mind, we would be glad to hear about it.">
+    <link rel="icon" href="assets/logos/symbol-gold.png" type="image/png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;1,300;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles/main.css">
+</head>
+<body>
+
+    <nav class="nav nav--solid nav--static" id="mainNav">
+        <a href="index.html" class="nav__logo">
+            <img src="assets/logos/logo-horizontal-white.png" alt="Castillo Arquitectos">
+        </a>
+        <ul class="nav__links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="who-we-are.html">Who We Are</a></li>
+            <li><a href="community.html">Community &amp; Master Planning</a></li>
+            <li><a href="residential.html">Residential</a></li>
+            <li><a href="contact.html" class="is-active">Contact</a></li>
+        </ul>
+        <div class="nav__lang">
+            <button class="nav__lang-btn nav__lang-btn--active">EN</button>
+            <span class="nav__lang-divider">/</span>
+            <button class="nav__lang-btn">ES</button>
+        </div>
+        <button class="nav__mobile-toggle" id="mobileToggle" aria-label="Open menu">
+            <span></span><span></span><span></span>
+        </button>
+    </nav>
+
+    <div class="mobile-nav" id="mobileNav">
+        <button class="mobile-nav__close" id="mobileClose" aria-label="Close menu">&times;</button>
+        <a href="index.html">Home</a>
+        <a href="who-we-are.html">Who We Are</a>
+        <a href="community.html">Community &amp; Master Planning</a>
+        <a href="residential.html">Residential</a>
+        <a href="contact.html">Contact</a>
+    </div>
+
+    <!-- Page header -->
+    <header class="page-header">
+        <div class="page-header__inner fade">
+            <span class="eyebrow">Contact</span>
+            <h1 class="page-header__title" style="font-style: italic;">Every project begins with a <em>conversation.</em></h1>
+            <p class="page-header__sub">Castillo Arquitectos works with a selective group of clients. If you have a project in mind, we would be glad to hear about it.</p>
+        </div>
+    </header>
+
+    <!-- Contact grid -->
+    <section class="section section--large section--warm">
+        <div class="wrap">
+            <div class="contact-grid">
+
+                <div class="fade">
+                    <span class="eyebrow">Direct Contact</span>
+                    <h2 class="contact-grid__heading">Based in <em>Guatemala City.</em></h2>
+                    <p class="contact-grid__text">Reach out by email or phone, or use the form on the right and we will respond personally.</p>
+
+                    <div class="contact-detail">
+                        <span class="contact-detail__label">Email</span>
+                        <span class="contact-detail__value"><a href="mailto:info@castilloarquitectos.com">info@castilloarquitectos.com</a></span>
+                    </div>
+                    <div class="contact-detail">
+                        <span class="contact-detail__label">Phone</span>
+                        <span class="contact-detail__value"><a href="tel:+50223178172">+502 2317 8172</a></span>
+                    </div>
+                    <div class="contact-detail">
+                        <span class="contact-detail__label">Studio</span>
+                        <span class="contact-detail__value">Guatemala City, Guatemala</span>
+                    </div>
+                    <div class="contact-detail">
+                        <span class="contact-detail__label">Follow</span>
+                        <span class="contact-detail__value"><a href="https://www.instagram.com/castilloarquitectos/" target="_blank" rel="noopener">Instagram</a></span>
+                    </div>
+                </div>
+
+                <div class="contact-form-panel fade fade-d1">
+                    <span class="eyebrow">Inquiry</span>
+                    <h2 class="contact-grid__heading contact-form-panel__title">Tell us about your <em>project.</em></h2>
+                    <p class="contact-form-panel__hint">Fields marked <abbr title="required">*</abbr> are required. We reply within a few business days.</p>
+                    <form class="form form--contact" id="inquiryForm" novalidate>
+                        <div class="form__group">
+                            <label class="form__label" for="contact-name">Full name <span class="form__required" aria-hidden="true">*</span></label>
+                            <input type="text" class="form__input" id="contact-name" name="name" autocomplete="name" required>
+                        </div>
+                        <div class="form__group">
+                            <label class="form__label" for="contact-email">Email <span class="form__required" aria-hidden="true">*</span></label>
+                            <input type="email" class="form__input" id="contact-email" name="email" autocomplete="email" inputmode="email" required>
+                        </div>
+                        <div class="form__group">
+                            <label class="form__label" for="contact-type">Project type <span class="form__required" aria-hidden="true">*</span></label>
+                            <div class="form__select-wrap">
+                                <select class="form__select" id="contact-type" name="project_type" required>
+                                    <option value="" disabled selected>Select a category</option>
+                                    <option value="community">Community &amp; Master Planning</option>
+                                    <option value="residential">Residential</option>
+                                    <option value="other">Other</option>
+                                </select>
+                                <span class="form__select-arrow" aria-hidden="true">&#9662;</span>
+                            </div>
+                        </div>
+                        <div class="form__group">
+                            <label class="form__label" for="contact-message">Project details <span class="form__required" aria-hidden="true">*</span></label>
+                            <textarea class="form__textarea" id="contact-message" name="message" rows="5" required aria-describedby="contact-message-hint"></textarea>
+                            <span id="contact-message-hint" class="form__hint">Timeline, location, or scope — as much as you can share helps us respond.</span>
+                        </div>
+                        <!-- honeypot (per brief, prefer over CAPTCHA) -->
+                        <div class="form__honeypot" aria-hidden="true">
+                            <label>Leave this field empty
+                                <input type="text" name="website" tabindex="-1" autocomplete="off">
+                            </label>
+                        </div>
+                        <button type="submit" class="form__submit">
+                            <span class="form__submit-text">Send message</span>
+                        </button>
+                        <p class="form__status" id="formStatus" role="status" aria-live="polite" hidden>Thank you. Castillo Arquitectos will be in touch.</p>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <div class="site-bottom">
+        <section class="cta-strip cta-strip--split">
+            <div class="cta-strip__inner">
+                <div class="cta-strip__signature fade">
+                    <span class="cta-strip__signature-mark">Castillo Arquitectos</span>
+                    <span class="cta-strip__signature-meta">Studio &middot; Guatemala City</span>
+                </div>
+                <div class="cta-strip__action fade fade-d1">
+                    <h2 class="cta-strip__title">Every project begins with a <em>conversation.</em></h2>
+                    <a href="contact.html" class="btn btn--gold btn--no-arrow">Get in Touch</a>
+                </div>
+            </div>
+        </section>
+
+        <footer class="footer">
+            <div class="footer__inner">
+                <div class="footer__left">
+                    <a href="index.html" class="footer__logo">
+                        <img src="assets/logos/logo-horizontal-white.png" alt="Castillo Arquitectos">
+                    </a>
+                    <span class="footer__copy">&copy; 2026 Castillo Arquitectos. All rights reserved.</span>
+                </div>
+                <div class="footer__right">
+                    <a href="mailto:info@castilloarquitectos.com">info@castilloarquitectos.com</a>
+                    <a href="tel:+50223178172">+502 2317 8172</a>
+                    <a href="https://www.instagram.com/castilloarquitectos/" target="_blank" rel="noopener">Instagram</a>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script src="styles/main.js"></script>
+    <script>
+        // Inline AJAX-style mock — inline confirmation, no redirect (per brief §4.4)
+        document.getElementById('inquiryForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const honey = this.elements['website'];
+            if (honey && honey.value) return; // bot
+            const status = document.getElementById('formStatus');
+            status.hidden = false;
+            this.reset();
+        });
+    </script>
+</body>
+</html>
