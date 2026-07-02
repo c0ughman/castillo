@@ -538,12 +538,12 @@ button { font: inherit; cursor: pointer; }
 }
 
 .hero--home .hero__title {
-    font-size: clamp(1.75rem, 4.07vw, 2.84rem);
-    line-height: 1.12;
-    max-width: min(14ch, 92vw);
-    font-weight: 300;
+    font-size: clamp(2.75rem, 7.2vw, 5.25rem);
+    line-height: 1.04;
+    max-width: min(16ch, 94vw);
+    font-weight: 400;
     font-synthesis: none;
-    letter-spacing: 0.008em;
+    letter-spacing: -0.012em;
     font-style: italic;
     color: #fff;
     text-shadow:
