@@ -1580,6 +1580,35 @@ body.page-category .section--white .projects-stack {
 .gallery__item--two-thirds { grid-column: span 8;  aspect-ratio: 3 / 2; }
 .gallery__item--portrait   { grid-column: span 4;  aspect-ratio: 3 / 4; }
 
+/* Numbered project list (community) */
+.project-row__num {
+    display: block;
+    font-family: var(--f-display);
+    font-size: 0.78rem;
+    font-weight: 400;
+    letter-spacing: 0.1em;
+    color: var(--c-gold);
+    margin-bottom: 0.55rem;
+}
+
+/* Sub-entry — a building that belongs to the project above it */
+.project-row--sub {
+    margin-left: 6%;
+    padding-left: 2rem;
+    border-left: 1px solid var(--c-line-light);
+}
+
+@media (max-width: 768px) {
+    .project-row--sub { margin-left: 0; padding-left: 1rem; }
+}
+
+/* Project movement label — marks the Master Plan / Architecture phases
+   of a single project (narrativa: "two phases of the same practice") */
+.project-movement__label {
+    display: block;
+    margin-bottom: 0.9rem;
+}
+
 /* Standalone form section (category inquiry + careers) */
 .form-section {
     max-width: 660px;

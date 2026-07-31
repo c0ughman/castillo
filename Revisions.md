@@ -47,6 +47,10 @@ Last updated: 2026-07-30
   - Nueva Miramar hero: master plan → built Phase 1 aerial
   - Same correction applied to both community.html listing thumbnails
 
+- [x] **Community & Master Planning merged into one project list** — narrativa presents these as one service with a single numbered 01–06 run, and the client's own image folders confirm it (`01_ElEncanto/{MasterPlan,Arquitectura}`). Urban Design and Architecture are now capability descriptions, not separate portfolios. Each project page carries labelled **Master Plan** and **Architecture** movements.
+- [x] **Los Altos Flats nested under Las Catalinas** — narrativa has it as a sub-entry, not a peer project
+- [x] **Stale root `index.html` archived** to `_archive/` — a second file of that name at the project root made it easy to open the wrong one
+
 ⚠️ **Netlify Forms needs one manual step:** form notifications must be pointed at info@castilloarquitectos.com in the Netlify dashboard (Site settings → Forms → Form notifications). Detection happens on deploy; forms will not appear until the first build after this push.
 
 ---
@@ -57,7 +61,7 @@ Last updated: 2026-07-30
 - [ ] **Separate the two audiences** clearly in nav + structure — two distinct worlds, must not bleed into each other
 - [ ] **Distinct visual treatments** for Residential vs. Community & Master Planning
 - [ ] **Apply lines → watercolor → photo animation** to the homepage hero (already exists on Community & Master Planning)
-- [ ] **Boost architecture presence in Community & Master Planning** — partly addressed (Los Altos Flats and Las Catalinas now have their own entries); still worth a dedicated visual treatment
+- [x] **Boost architecture presence in Community & Master Planning** — addressed by the merge: architecture now appears inside every project rather than in a separate list
 
 ---
 
