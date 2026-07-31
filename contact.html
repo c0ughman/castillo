@@ -84,7 +84,8 @@
                     <span class="eyebrow">Inquiry</span>
                     <h2 class="contact-grid__heading contact-form-panel__title">Tell us about your <em>project.</em></h2>
                     <p class="contact-form-panel__hint">Fields marked <abbr title="required">*</abbr> are required. We reply within a few business days.</p>
-                    <form class="form form--contact" id="inquiryForm" novalidate>
+                    <form class="form form--contact" id="inquiryForm" name="contact-general" method="POST" data-ajax-form data-netlify="true" netlify-honeypot="website">
+                        <input type="hidden" name="form-name" value="contact-general">
                         <div class="form__group">
                             <label class="form__label" for="contact-name">Full name <span class="form__required" aria-hidden="true">*</span></label>
                             <input type="text" class="form__input" id="contact-name" name="name" autocomplete="name" required>
@@ -135,7 +136,8 @@
                     <span class="cta-strip__signature-meta">Studio &middot; Guatemala City</span>
                 </div>
                 <div class="cta-strip__action fade fade-d1">
-                    <h2 class="cta-strip__title">Every project begins with a <em>conversation.</em></h2>
+                    <h2 class="cta-strip__title">Let&rsquo;s build something <em>meaningful together.</em></h2>
+                    <p class="cta-strip__copy">Whether you&rsquo;re envisioning a new community, a distinctive residence, or a transformative urban project, we&rsquo;re here to help bring your vision to life.</p>
                     <a href="contact.html" class="btn btn--gold btn--no-arrow">Get in Touch</a>
                 </div>
             </div>

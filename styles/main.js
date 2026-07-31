@@ -355,4 +355,54 @@
         window.addEventListener('scroll', setActive);
         setActive();
     }
+
+    /* Forms — AJAX submit to Netlify Forms, inline confirmation, no redirect.
+       Brief 4.4: honeypot preferred over CAPTCHA; recipient configured in Netlify. */
+    document.querySelectorAll('form[data-ajax-form]').forEach(form => {
+        const status = form.querySelector('.form__status');
+        const submit = form.querySelector('.form__submit');
+        const submitText = form.querySelector('.form__submit-text');
+        const originalText = submitText ? submitText.textContent : '';
+
+        const say = (msg, state) => {
+            if (!status) return;
+            status.textContent = msg;
+            status.hidden = false;
+            status.classList.toggle('form__status--error', state === 'error');
+        };
+
+        form.addEventListener('submit', async e => {
+            e.preventDefault();
+
+            // Honeypot: a filled hidden field means a bot. Fail silently.
+            if (form.elements.website && form.elements.website.value) return;
+
+            const invalid = form.querySelector(':invalid');
+            if (invalid) {
+                invalid.focus();
+                say('Please complete the required fields.', 'error');
+                return;
+            }
+
+            if (submit) submit.disabled = true;
+            if (submitText) submitText.textContent = 'Sending…';
+
+            try {
+                const body = new URLSearchParams(new FormData(form)).toString();
+                const res = await fetch('/', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body
+                });
+                if (!res.ok) throw new Error(res.status);
+                form.reset();
+                say(form.dataset.successMessage || 'Thank you. Castillo Arquitectos will be in touch.');
+                if (submit) submit.hidden = true;
+            } catch (err) {
+                say('Something went wrong. Please email info@castilloarquitectos.com.', 'error');
+                if (submit) submit.disabled = false;
+                if (submitText) submitText.textContent = originalText;
+            }
+        });
+    });
 })();
