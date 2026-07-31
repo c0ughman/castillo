@@ -64,55 +64,44 @@
         </div>
     </div>
 
-    <!-- Primary service lead-in -->
-    <section class="section section--large section--white">
+    <!-- One service, stated once; the two phases sit side by side beneath it -->
+    <section class="section section--large section--community-light" id="service">
         <div class="wrap">
-            <div class="service-intro fade">
-                <div class="service-intro__head">
-                    <span class="eyebrow">Master Planning &amp; Community Design</span>
-                    <h2 class="service-intro__heading">The studio&rsquo;s <em>primary service.</em></h2>
+            <div class="service-lead fade">
+                <span class="eyebrow">Master Planning &amp; Community Design</span>
+                <h2 class="service-lead__heading">Urban design and architecture are not separate services. They are <em>two phases of the same practice.</em></h2>
+                <div class="service-lead__body">
+                    <p>Master Planning &amp; Community Design is the studio&rsquo;s primary service. We create master plans that balance beauty, functionality, and long-term sustainability. From new neighborhoods to urban development projects, our community designs prioritize walkability, social connection, and a strong sense of place.</p>
+                    <p>Beyond planning, we design the architecture of the buildings that give shape to a community &mdash; from residential typologies to mixed-use and civic architecture &mdash; with special emphasis on how the built environment strengthens identity and belonging.</p>
                 </div>
-                <p class="service-intro__body">Master Planning &amp; Community Design is the studio&rsquo;s primary service. We create master plans that balance beauty, functionality, and long-term sustainability. From new neighborhoods to urban development projects, our community designs prioritize walkability, social connection, and a strong sense of place.</p>
-                <p class="service-intro__body">Beyond planning, we design the architecture of the buildings that give shape to a community &mdash; from residential typologies to mixed-use and civic architecture &mdash; with special emphasis on how the built environment strengthens identity and belonging. Urban design and architecture are not separate services: they are two phases of the same integrated practice.</p>
             </div>
-        </div>
-    </section>
 
-    <!-- Capabilities: two phases of one practice -->
-    <section class="section section--community-light" id="urban-design">
-        <div class="wrap">
-            <div class="service-intro fade">
-                <div class="service-intro__head">
-                    <span class="eyebrow">Urban Design</span>
-                    <h2 class="service-intro__heading">Strategic plans for new communities, city districts, and resort destinations.</h2>
+            <div class="phases">
+                <div class="phase fade" id="urban-design">
+                    <span class="phase__num" aria-hidden="true">01</span>
+                    <h3 class="phase__title">Urban Design</h3>
+                    <p class="phase__body">Castillo Arquitectos designs walkable communities, with a mix of uses, public spaces, and an identity grounded in each site&rsquo;s topography and climate. The master plan defines the structure of streets, plazas, and parks that makes a life of proximity and encounter possible.</p>
+                    <ul class="phase__scope">
+                        <li>New town &amp; neighbourhood master plans</li>
+                        <li>Urban infill &amp; regeneration</li>
+                        <li>Planned resort &amp; tourist communities</li>
+                        <li>Form-based codes &amp; development regulations</li>
+                        <li>Participatory design charrettes</li>
+                    </ul>
                 </div>
-                <p class="service-intro__body">Castillo Arquitectos designs walkable communities, with a mix of uses, public spaces, and an identity grounded in each site&rsquo;s topography and climate. The master plan defines the structure of streets, plazas, and parks that makes a life of proximity and encounter possible.</p>
-                <ul class="service-intro__scope" style="list-style: none;">
-                    <li class="service-intro__scope-item">New town &amp; neighbourhood master plans</li>
-                    <li class="service-intro__scope-item">Urban infill &amp; regeneration</li>
-                    <li class="service-intro__scope-item">Planned resort &amp; tourist communities</li>
-                    <li class="service-intro__scope-item">Form-based codes &amp; development regulations</li>
-                    <li class="service-intro__scope-item">Participatory design charrettes</li>
-                </ul>
-            </div>
-        </div>
-    </section>
 
-    <section class="section section--community-cream" id="architecture">
-        <div class="wrap">
-            <div class="service-intro fade">
-                <div class="service-intro__head">
-                    <span class="eyebrow">Architecture</span>
-                    <h2 class="service-intro__heading">The buildings that give communities their identity.</h2>
+                <div class="phase fade fade-d1" id="architecture">
+                    <span class="phase__num" aria-hidden="true">02</span>
+                    <h3 class="phase__title">Architecture</h3>
+                    <p class="phase__body">The studio&rsquo;s architecture gives built form to the vision of each master plan and each place: mixed-use buildings, multifamily housing, and civic spaces that translate urban principles into livable experiences, with a materiality meant to age with dignity within its setting.</p>
+                    <ul class="phase__scope">
+                        <li>Mixed-use commercial &amp; civic buildings</li>
+                        <li>Club houses &amp; community amenity buildings</li>
+                        <li>Hospitality &amp; resort architecture</li>
+                        <li>Market buildings &amp; civic plazas</li>
+                        <li>Residential typologies within planned communities</li>
+                    </ul>
                 </div>
-                <p class="service-intro__body">The studio&rsquo;s architecture gives built form to the vision of each master plan and each place: mixed-use buildings, multifamily housing, and civic spaces that translate urban principles into livable experiences, with a materiality meant to age with dignity within its setting.</p>
-                <ul class="service-intro__scope" style="list-style: none;">
-                    <li class="service-intro__scope-item">Mixed-use commercial &amp; civic buildings</li>
-                    <li class="service-intro__scope-item">Club houses &amp; community amenity buildings</li>
-                    <li class="service-intro__scope-item">Hospitality &amp; resort architecture</li>
-                    <li class="service-intro__scope-item">Market buildings &amp; civic plazas</li>
-                    <li class="service-intro__scope-item">Residential typologies within planned communities</li>
-                </ul>
             </div>
         </div>
     </section>
@@ -178,6 +167,7 @@
                         <img src="assets/img/projects/los-altos-flats/los-altos-flats-01-1200.webp" alt="Los Altos Flats stepping down the hillside" loading="lazy">
                     </a>
                     <div>
+                        <p class="project-row__kicker">Within Las Catalinas</p>
                         <p class="project-row__location">Las Catalinas, Guanacaste, Costa Rica</p>
                         <h3 class="project-row__title">Los Altos Flats</h3>
                         <p class="project-row__scope">Architecture &mdash; Multifamily Residential</p>
@@ -188,7 +178,7 @@
                 <!-- 04 Nueva Miramar -->
                 <article class="project-row fade">
                     <a href="projects/nueva-miramar.html" class="project-row__image" style="display: block;">
-                        <img src="assets/img/projects/nueva-miramar/view-01-1200.webp" alt="Nueva Miramar Phase 1 from the air" loading="lazy">
+                        <img src="assets/img/projects/nueva-miramar/view-06-1200.webp" alt="Nueva Miramar commercial district street" loading="lazy">
                     </a>
                     <div>
                         <span class="project-row__num">04</span>
@@ -202,7 +192,7 @@
                 <!-- 05 Palmerola -->
                 <article class="project-row fade">
                     <a href="projects/palmerola.html" class="project-row__image" style="display: block;">
-                        <img src="assets/img/projects/palmerola/view-01-1200.webp" alt="Palmerola master plan street view" loading="lazy">
+                        <img src="assets/img/projects/palmerola/view-02-1200.webp" alt="Palmerola street at golden hour" loading="lazy">
                     </a>
                     <div>
                         <span class="project-row__num">05</span>
@@ -216,7 +206,7 @@
                 <!-- 06 Santa Mar&iacute;a Leisure District -->
                 <article class="project-row fade">
                     <a href="projects/santa-maria.html" class="project-row__image" style="display: block;">
-                        <img src="assets/img/projects/santa-maria/view-01-1200.webp" alt="Santa María Leisure District aerial perspective" loading="lazy">
+                        <img src="assets/img/projects/santa-maria/view-04-1200.webp" alt="Santa María village centre at golden hour" loading="lazy">
                     </a>
                     <div>
                         <span class="project-row__num">06</span>
@@ -235,9 +225,29 @@
     <!-- Inquiry form -->
     <section class="section section--large section--warm" id="inquiry">
         <div class="wrap">
-            <div class="form-section">
-                <div class="contact-form-panel fade">
+            <div class="contact-grid">
+
+                <div class="fade">
                     <span class="eyebrow">Start a conversation</span>
+                    <h2 class="contact-grid__heading">Every project begins with a <em>conversation.</em></h2>
+                    <p class="contact-grid__text">Master plans, urban districts, and the architecture that gives them form. Tell us where the project stands and we will respond personally.</p>
+
+                    <div class="contact-detail">
+                        <span class="contact-detail__label">Email</span>
+                        <span class="contact-detail__value"><a href="mailto:info@castilloarquitectos.com">info@castilloarquitectos.com</a></span>
+                    </div>
+                    <div class="contact-detail">
+                        <span class="contact-detail__label">Phone</span>
+                        <span class="contact-detail__value"><a href="tel:+50223178172">+502 2317 8172</a></span>
+                    </div>
+                    <div class="contact-detail">
+                        <span class="contact-detail__label">Studio</span>
+                        <span class="contact-detail__value">Guatemala City, Guatemala</span>
+                    </div>
+                </div>
+
+                <div class="contact-form-panel fade fade-d1">
+                    <span class="eyebrow">Inquiry</span>
                     <h2 class="contact-grid__heading contact-form-panel__title">Tell us about your <em>project.</em></h2>
                     <p class="contact-form-panel__hint">For master plans, urban districts, and community architecture. Fields marked <abbr title="required">*</abbr> are required.</p>
                     <form class="form form--contact" name="inquiry-community" method="POST" data-ajax-form data-netlify="true" netlify-honeypot="website" data-success-message="Thank you. Castillo Arquitectos will be in touch about your project.">

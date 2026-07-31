@@ -55,6 +55,19 @@ Last updated: 2026-07-30
 
 ---
 
+## ✅ Done — review round 2 (2026-07-30)
+
+- [x] **Las Catalinas town description removed from Residential** — the town is a Community & Master Planning project (03) and is described there. Residential now only describes the *houses*, with an inline cross-link to the community project.
+- [x] **Stray line beside Los Altos Flats removed** — the nested sub-entry used a `border-left` that read as a stray rule. Replaced with a "Within Las Catalinas" kicker.
+- [x] **Community page intro restructured** — was three visually identical stacked blocks (primary service / Urban Design / Architecture). Now one lead statement, then the two phases side by side as numbered 01 / 02 columns. All three texts are narrativa's; only the presentation changed.
+- [x] **Forms restyled** — the three new forms were lone centred panels. They now use the contact page's two-column layout (context and direct contact left, form panel right) with identical classes.
+- [x] **Heroes swapped**: Palmerola → golden-hour street render; Nueva Miramar → built commercial street render; Santa María → village centre at golden hour (its previous feature image was an annotated massing diagram with Spanish labels).
+- [x] **Residential listing images**: Casa Curuba → coral facade with arched green doors; Casa Menta → green facade above the cobbled street. Casa Menta's previous thumbnail was a portrait image in a landscape slot, which cropped badly.
+
+⚠️ **`santa-maria/view-05` is excluded from the site** — it has Spanish marketing text ("5,000 m² de parque en Country Club") burned into the image, which cannot be used on the English pages. Ask the client for a clean version if the shot is wanted.
+
+---
+
 ## 🟡 Bigger design/dev work (takes more time)
 
 - [ ] **Spanish language layer** — narrativa supplies complete ES for every page; the site has no toggle yet. Brief 4.1: toggle must preserve page context, not redirect home. **Next session.**
