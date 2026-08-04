@@ -3262,10 +3262,11 @@ section.section--entries-editorial:not(#entries) + .site-bottom .cta-strip--spli
 /* .h-panel (the intro/cta text panels) is 50vw above — two of them fit side
    by side on a wide desktop window, but on a phone that's half the screen
    and everything inside reads cramped/clipped. Every panel in the pan
-   sequence goes full viewport width below 1024px instead, and the rail/
-   track totals are bumped from 300vw to 400vw to match (100vw teaser +
-   100vw intro + 100vw split + 100vw cta). Placed after the base width
-   rules above so it wins the cascade at equal specificity. */
+   sequence goes full viewport width below 1024px instead (the featured-
+   projects panel goes even wider, see below), and the rail/track totals
+   are bumped from 300vw to 425vw to match (100vw teaser + 100vw intro +
+   125vw split + 100vw cta). Placed after the base width rules above so it
+   wins the cascade at equal specificity. */
 @media (max-width: 1024px) {
     .h-panel {
         flex: 0 0 100vw;
@@ -3273,12 +3274,12 @@ section.section--entries-editorial:not(#entries) + .site-bottom .cta-strip--spli
     }
 
     .entry-stage--with-h .entry-stage__track {
-        width: 400vw;
+        width: 425vw;
     }
 
     .h-panel-rail {
-        flex: 0 0 400vw;
-        width: 400vw;
+        flex: 0 0 425vw;
+        width: 425vw;
     }
 
     /* Featured-projects panel: on a wide desktop window, two columns (one
@@ -3287,8 +3288,14 @@ section.section--entries-editorial:not(#entries) + .site-bottom .cta-strip--spli
        feedback, flip to two ROWS instead — top row: the two smaller
        projects side by side; bottom row: the one bigger/featured project,
        full width. Every project image goes edge-to-edge width either way,
-       it's just organized to fit a portrait screen instead of a wide one. */
+       it's just organized to fit a portrait screen instead of a wide one.
+       Also given more room than the other panels (125vw vs 100vw) per
+       feedback that it felt cramped even at full viewport width — the
+       pan simply carries a little further to clear it, same as any other
+       panel width change already baked into this mechanic. */
     .h-panel--split {
+        flex: 0 0 125vw;
+        width: 125vw;
         flex-direction: column;
     }
 
