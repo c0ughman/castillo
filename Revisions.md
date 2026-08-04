@@ -89,6 +89,38 @@ Every residential image is now used exactly once per page — no duplicates, no 
 
 ---
 
+## ✅ Done — image placement pass (2026-08-03)
+
+Reversed the previous round: **heroes are photography/renders again, and the drawings sit as the plate directly under the hero.** The `hero--drawing` treatment (drawing contained on a navy field) is removed — that was the source of the dark blue bars on the sides.
+
+Hero image is now also used as the thumbnail on the category page and the home page, so a project reads with one main image everywhere.
+
+| Project | Hero / thumbnail | Plate under hero |
+|---|---|---|
+| El Encanto | `casa-club-09` | `casa-club-08` |
+| Ciudad del Este | `phase-1-04` | `aerial-01` |
+| Las Catalinas | `plaza-del-mercado-01` (kept) | `plaza-del-mercado-drawing` |
+| Los Altos Flats | `los-altos-flats-01` (kept) | `los-altos-flats-drawing01` |
+| Nueva Miramar | `view-04` | `view-01` |
+| Palmerola | unchanged, by request | — |
+| Santa María | unchanged, by request | — |
+| Casa Curuba | `curuba-02` | `curuba-06` (drawing) |
+| Casa Los Monos | `los-monos-01` | `los-monos-06` (drawing) |
+| Casa Menta | `menta-05` | `menta-02` — drawing `menta-08` sits beside the first text block instead |
+| Casa Virginia | `virginia-01` (kept) | `virginia-05` (drawing) |
+| Casas en Barrio El Prado | `paseo-del-parque-33-01` | `aquatica-01` |
+| Villa Fontana | `fontana-01` (kept) | `fontana-03`; drawing `fontana-04` beside first text |
+
+Las Catalinas gallery order reshuffled as requested.
+
+### Client to supply
+- [ ] **More images for Palmerola and Santa María** — both left as-is because the folders have only 4 and 5 approved images, too few to improve the sequence.
+
+### Still open
+- [ ] **Barrio El Prado bento redesign** — four stacked titled galleries today. Wants per-house sections (title, gallery, drawing, text) in a bento layout keyed to each house's colour. Deferred by request.
+
+---
+
 ## 🟡 Bigger design/dev work (takes more time)
 
 - [ ] **Spanish language layer** — narrativa supplies complete ES for every page; the site has no toggle yet. Brief 4.1: toggle must preserve page context, not redirect home. **Next session.**
