@@ -1751,7 +1751,9 @@ body.page-category .section--white .projects-stack {
     background: var(--house-tint, var(--c-warm-white));
     padding: clamp(2.75rem, 5vw, 4.5rem) 0;
     position: relative;
-    box-shadow: 0 -14px 28px -18px rgba(12, 39, 53, 0.45);
+    /* Each section casts a soft shadow onto the one below it. Stacking order
+       is set per section in the markup so the earlier one paints on top. */
+    box-shadow: 0 10px 18px -12px rgba(12, 39, 53, 0.13);
 }
 
 .house__head {
