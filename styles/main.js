@@ -199,10 +199,11 @@
         });
     });
 
-    // Scroll-pinned entry reveal — desktop only
+    // Scroll-pinned entry reveal — same mechanic at every viewport width
+    // (the CSS driving it is unconditional, sized in vw/vh so it fits a
+    // portrait phone the same way it fits a desktop window).
     const stages = document.querySelectorAll('.entry-stage');
-    const desktopMQ = window.matchMedia('(min-width: 1025px)');
-    if (stages.length && desktopMQ.matches) {
+    if (stages.length) {
         const data = new Map();
 
         const measure = (stage) => {
@@ -234,7 +235,10 @@
                 track,
                 pin,
                 reverse,
-                scale: vw / mRect.width,
+                // "Cover" scale — fills both axes. A width-only scale left
+                // portrait/mobile viewports (tall relative to the media's
+                // own box) with dead space above and below the image.
+                scale: Math.max(vw / mRect.width, vh / mRect.height),
                 tx: vw / 2 - initCx,
                 ty: vh / 2 - initCy,
             });

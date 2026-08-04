@@ -1989,7 +1989,7 @@ body.page-category .section--white .projects-stack {
    via the .h-panel__half rule groups above. */
 .related-grid {
     display: grid;
-    grid-template-columns: 1.5fr 1fr 1fr;
+    grid-template-columns: 1.8fr 1fr 1fr;
     grid-template-rows: 1fr auto;
     gap: clamp(0.7rem, 1.4vw, 1.15rem);
 }
@@ -2027,8 +2027,8 @@ body.page-category .section--white .projects-stack {
     grid-row: 2;
     display: flex;
     align-items: center;
-    gap: 1.25rem;
-    padding: clamp(1.9rem, 3.2vw, 2.7rem) clamp(1.8rem, 3.2vw, 2.8rem);
+    gap: 1rem;
+    padding: clamp(1.1rem, 1.8vw, 1.5rem) clamp(1.2rem, 2vw, 1.7rem);
     background: transparent;
     border: 1.5px solid var(--c-navy);
     color: var(--c-navy);
@@ -2043,7 +2043,7 @@ body.page-category .section--white .projects-stack {
     font-weight: 500;
     letter-spacing: 0.16em;
     text-transform: uppercase;
-    color: var(--c-navy);
+    color: var(--c-gold-light);
     white-space: nowrap;
 }
 
@@ -2051,7 +2051,7 @@ body.page-category .section--white .projects-stack {
     font-family: var(--f-display);
     font-weight: 300;
     font-style: italic;
-    font-size: clamp(1.05rem, 1.7vw, 1.35rem);
+    font-size: clamp(0.9rem, 1.4vw, 1.1rem);
     line-height: 1.3;
     margin-right: auto;
 }
@@ -2066,7 +2066,7 @@ body.page-category .section--white .projects-stack {
 
 @media (max-width: 900px) {
     .related-grid { grid-template-columns: 1fr 1fr; grid-template-rows: auto auto auto; }
-    .related-card:nth-of-type(1) { grid-column: 1 / -1; grid-row: 1; min-height: 228px; }
+    .related-card:nth-of-type(1) { grid-column: 1 / -1; grid-row: 1; min-height: 290px; }
     .related-card:nth-of-type(2) { grid-column: 1; grid-row: 2; }
     .related-card:nth-of-type(3) { grid-column: 2; grid-row: 2; }
     .related-cta { grid-column: 1 / -1; grid-row: 3; }
@@ -2888,7 +2888,9 @@ section.section--entries-editorial:not(#entries) + .site-bottom .cta-strip--spli
 }
 
 @media (max-width: 1024px) {
-    .entries--editorial { padding: 0 clamp(1rem, 4vw, 2.5rem); }
+    /* No horizontal padding here — .entry-stage/.entry-stage__pin/.entry-
+       stage__track below are sized in vw units and need the full viewport
+       width to pin, expand and translate correctly at every breakpoint. */
     .entry-stage + .entry-stage { padding-top: 1rem; }
 
     .entry--editorial,
@@ -2919,8 +2921,10 @@ section.section--entries-editorial:not(#entries) + .site-bottom .cta-strip--spli
 
 }
 
-/* Scroll-pinned reveal — desktop only */
-@media (min-width: 1025px) {
+/* Scroll-pinned reveal — same mechanic at every width: vertical scroll
+   pins the section, expands the teaser image, then pans horizontally
+   through the intro/split/cta panels. Sized in vw/vh so it fits a
+   portrait phone exactly the way it fits a desktop viewport. */
     .section--entries-editorial { padding-bottom: 0; }
 
     .entries--editorial { gap: 0; }
@@ -3069,8 +3073,6 @@ section.section--entries-editorial:not(#entries) + .site-bottom .cta-strip--spli
         width: 300vw;
         height: 100%;
     }
-
-}
 
 /* ═══════════════════════════════════════════
    HOME CTA — split layout, right-aligned action
@@ -3437,6 +3439,17 @@ section.section--entries-editorial:not(#entries) + .site-bottom .cta-strip--spli
                 linear-gradient(90deg, transparent 0%, rgba(0, 0, 0, 0.08) 100%);
 }
 
+/* Related-card images rest at a soft navy tint so they read as distinct
+   from the main gallery; hovering fades it out into the usual gold hover. */
+.related-card .h-panel__overlay {
+    box-shadow: inset 0 0 0 999px rgba(12, 39, 53, 0.2);
+    transition: box-shadow 0.5s ease;
+}
+
+.related-card:hover .h-panel__overlay {
+    box-shadow: inset 0 0 0 999px rgba(12, 39, 53, 0);
+}
+
 .h-panel__content {
     position: absolute;
     left: auto;
@@ -3696,12 +3709,10 @@ section.section--entries-editorial:not(#entries) + .site-bottom .cta-strip--spli
 .h-panel__btn--filled { color: #fff; background: var(--c-gold); border-color: var(--c-gold); }
 .h-panel__btn--filled:hover { background: var(--c-navy); border-color: var(--c-navy); }
 
-/* Mobile / tablet — no sticky pin; the entry teaser + intro/split/cta
-   panels all become one native swipeable, snap-scrolling carousel — the
-   same continuous "slide through everything" feel as the desktop pin,
-   instead of stacking (which used to splay 100vh/50vw panels into a
-   long, awkward vertical column, with the teaser stuck as a separate
-   static block above it). Both home category sections share this setup. */
+/* .h-scroll/.h-scroll__track/.h-panel etc. are unconditional (not gated
+   to desktop) now — see the scroll-pinned reveal rules above, which apply
+   at every width so mobile gets the exact same pin/expand/pan mechanic,
+   just scaled to a portrait viewport via the same vw/vh units. */
 @media (max-width: 1024px) {
     .h-scroll { height: auto; }
     .h-scroll__sticky {
@@ -3714,67 +3725,6 @@ section.section--entries-editorial:not(#entries) + .site-bottom .cta-strip--spli
         width: 100%;
         transform: none !important;
     }
-
-    .entry-stage--with-h .entry-stage__pin { display: block; }
-    .entry-stage--with-h .entry-stage__track {
-        display: block;
-        width: 100%;
-        height: auto;
-    }
-
-    .h-panel-rail {
-        display: flex;
-        width: 100%;
-        overflow-x: auto;
-        overflow-y: hidden;
-        scroll-snap-type: x mandatory;
-        scroll-padding-left: 6vw;
-        -webkit-overflow-scrolling: touch;
-        scrollbar-width: none;
-        -ms-overflow-style: none;
-        padding: 0 6vw 1.5rem;
-        gap: 3vw;
-    }
-    .h-panel-rail::-webkit-scrollbar { display: none; }
-
-    .entry-stage--with-h .entry-stage__inner,
-    .h-panel {
-        flex: 0 0 auto;
-        width: 88vw;
-        height: auto;
-        min-height: 62vh;
-        scroll-snap-align: start;
-        scroll-snap-stop: always;
-    }
-
-    .entry-stage--with-h .entry-stage__inner {
-        display: flex;
-        align-items: center;
-        padding-block: 0;
-    }
-
-    .h-panel--split {
-        width: 88vw;
-        min-height: 62vh;
-        display: flex;
-        flex-direction: row;
-        gap: 0;
-    }
-
-    .h-panel__split-stack,
-    .h-panel__half--full {
-        flex: 0 0 50%;
-        width: 50%;
-        height: auto;
-        min-height: 62vh;
-    }
-
-    .h-panel--intro,
-    .h-panel--cta {
-        min-height: 62vh;
-        padding: 3rem 1.5rem;
-    }
-    .h-panel__inner { padding: 0; max-width: 100%; }
 }
 
 /* ═══════════════════════════════════════════
