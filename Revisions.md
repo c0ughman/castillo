@@ -156,6 +156,23 @@ Home page now: Community intro Las Catalinas · featured Ciudad del Este, El Enc
 
 ---
 
+## ✅ Done — El Prado polish, page motifs, related bento (2026-08-03)
+
+**Barrio El Prado**
+- [x] Tints softened 40% toward white: `#EEF6EE` / `#EEF4FA` / `#FBF7EA` / `#FDF2E9`
+- [x] House titles now use the standard navy rather than the section colour, so text no longer shifts hue per house
+- [x] Titles and drawings reduced; sections separated by a soft shadow instead of a hard edge
+- [x] **Four-up house index** added above the sections — one lead photo per house, each linking to its section anchor. Lead photos were pulled out of their galleries so no image repeats on the page (all 22 used exactly once).
+
+**Category pages**
+- [x] Divider rule between the lead and the two phase columns removed
+- [x] **Arc motif** added bottom-right of the lead on both pages — four ~100px plates, rotated and offset so they read as an arc, not touching. Community: master plan, mixed-use, civic architecture, architectural drawing. Residential: facade detail, section drawing, courtyard, terrace.
+
+**All 13 project pages**
+- [x] The "Next Project" title-and-arrow replaced with a **related bento**: three project cards drawn from the same section's ring, plus a CTA panel that lands on that category page's own inquiry form (`community.html#inquiry` / `residential.html#inquiry`). Generated programmatically, so the ring stays correct as projects are added or removed.
+
+---
+
 ## 🟡 Bigger design/dev work (takes more time)
 
 - [ ] **Spanish language layer** — narrativa supplies complete ES for every page; the site has no toggle yet. Brief 4.1: toggle must preserve page context, not redirect home. **Next session.**
