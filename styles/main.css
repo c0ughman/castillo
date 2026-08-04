@@ -2919,6 +2919,16 @@ section.section--entries-editorial:not(#entries) + .site-bottom .cta-strip--spli
         padding-top: 0;
     }
 
+    /* The scroll-pin's expand phase covers the media box up to full-screen.
+       At the default 16/10 (landscape) aspect ratio, a portrait phone box is
+       so much shorter than the viewport that the cover-scale needed is
+       enormous (~4x) — the image visibly "pops"/snaps instead of easing in.
+       Starting from a portrait-ish box on narrow screens keeps that scale
+       modest so the same animation reads as a smooth zoom, not a glitch. */
+    .entry-stage .entry__media {
+        aspect-ratio: 3 / 4;
+    }
+
 }
 
 /* Scroll-pinned reveal — same mechanic at every width: vertical scroll
@@ -3442,7 +3452,7 @@ section.section--entries-editorial:not(#entries) + .site-bottom .cta-strip--spli
 /* Related-card images rest at a soft navy tint so they read as distinct
    from the main gallery; hovering fades it out into the usual gold hover. */
 .related-card .h-panel__overlay {
-    box-shadow: inset 0 0 0 999px rgba(12, 39, 53, 0.2);
+    box-shadow: inset 0 0 0 999px rgba(12, 39, 53, 0.4);
     transition: box-shadow 0.5s ease;
 }
 
