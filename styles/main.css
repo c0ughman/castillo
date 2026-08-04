@@ -1725,7 +1725,7 @@ body.page-category .section--white .projects-stack {
 
 .house__head {
     display: grid;
-    grid-template-columns: 1fr 1.15fr;
+    grid-template-columns: 1fr auto;
     align-items: center;
     gap: clamp(2rem, 5vw, 4rem);
     margin-bottom: clamp(2rem, 4vw, 3.25rem);
@@ -1743,9 +1743,10 @@ body.page-category .section--white .projects-stack {
 
 .house__drawing {
     margin: 0;
+    width: clamp(180px, 26vw, 320px);
     background: #fff;
-    padding: clamp(1rem, 2.5vw, 2rem);
-    box-shadow: 0 18px 44px rgba(12, 39, 53, 0.10);
+    padding: clamp(0.7rem, 1.4vw, 1.1rem);
+    box-shadow: 0 12px 30px rgba(12, 39, 53, 0.09);
 }
 
 .house__drawing img {
@@ -1758,6 +1759,7 @@ body.page-category .section--white .projects-stack {
 
 @media (max-width: 820px) {
     .house__head { grid-template-columns: 1fr; gap: 1.5rem; }
+    .house__drawing { width: min(240px, 60%); }
 }
 
 /* Inline text link inside body copy */

@@ -141,6 +141,21 @@ Las Catalinas gallery order reshuffled as requested.
 
 ---
 
+## ✅ Done — El Prado colours + home page arrangement (2026-08-03)
+
+- [x] **House tints adjusted** — Aquática now clearly green `#E2F0E2`, Paseo del Parque 33 blue `#E2EDF7`, Paseo del Parque 36 unchanged `#F8F2DC`, Ruta del Llano 61 orange `#FCEADA`.
+- [x] **House drawings made smaller** — the head grid is now `1fr auto` with the drawing capped at `clamp(180px, 26vw, 320px)`, so the title leads and the drawing sits beside it rather than competing.
+- [x] **Featured projects restored.** Rather than swapping featured projects to remove the home page repeat, the *introduction* images changed instead: Residential now opens on **Villa Fontana**, Community stays on **Las Catalinas**. Casa Los Monos is back in the featured set.
+- [x] **Ciudad del Este and El Encanto swapped in the featured panels** — Ciudad del Este takes the large panel, El Encanto the smaller one.
+
+Home page now: Community intro Las Catalinas · featured Ciudad del Este, El Encanto, Nueva Miramar. Residential intro Villa Fontana · featured Casa Virginia, Casa Curuba, Casa Los Monos. No project appears twice.
+
+### Known, left alone by request
+- **Ruta del Llano 61** highlights a photo, not a drawing — none exists in the approved folder.
+- **Casa Aquática's drawing (`aquatica-06`) may not depict that house.** Flagged by the client and left in place; worth confirming with the studio.
+
+---
+
 ## 🟡 Bigger design/dev work (takes more time)
 
 - [ ] **Spanish language layer** — narrativa supplies complete ES for every page; the site has no toggle yet. Brief 4.1: toggle must preserve page context, not redirect home. **Next session.**
