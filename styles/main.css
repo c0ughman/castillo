@@ -51,6 +51,8 @@ html {
     scroll-behavior: smooth;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+    max-width: 100%;
 }
 
 body {
@@ -1033,6 +1035,45 @@ button { font: inherit; cursor: pointer; }
     }
 }
 
+/* Same fix as .home-who below 640px: stop bleeding the plan drawing behind
+   the copy (it has nowhere to go on a narrow column but on top of the text)
+   and place it as a contained strip after the copy instead. */
+@media (max-width: 640px) {
+    .page-header--who { padding-bottom: 3rem; }
+
+    .page-header__who-stage {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .page-header__who-art {
+        position: static;
+        order: 2;
+        inset: auto;
+        left: auto; right: auto; top: auto; bottom: auto;
+        width: 100%;
+        min-height: 0;
+        height: 220px;
+        overflow: hidden;
+        transform: none;
+        margin-top: 2.5rem;
+    }
+
+    .page-header__who-plan {
+        position: static;
+        display: block;
+        width: 100%;
+        height: 100%;
+        max-width: none;
+        object-fit: cover;
+        object-position: 30% 70%;
+        transform: none;
+        opacity: 1;
+    }
+
+    .page-header__who-inner { order: 1; }
+}
+
 /* ═══════════════════════════════════════════
    Category page
    ═══════════════════════════════════════════ */
@@ -1587,10 +1628,22 @@ body.page-category .section--white .projects-stack {
 
 .gallery__item:hover img { transform: scale(1.02); }
 
-/* Below phone width a three-up row leaves each image too small to read */
+/* Below phone width a three-up row leaves each image too small to read, so
+   those (and single-image rows) go full width. Rows the build already
+   paired as two images, though, stay side by side at their original
+   aspect-driven proportions — otherwise every image becomes its own full
+   screen-width slide and the gallery turns into an endless single column. */
 @media (max-width: 560px) {
-    .gallery__row { flex-wrap: wrap; }
+    .gallery__row { flex-wrap: wrap; gap: clamp(4px, 1.8vw, 8px); }
     .gallery__item { flex-basis: 100%; }
+
+    .gallery__row:has(.gallery__item:nth-child(2)):not(:has(.gallery__item:nth-child(3))) {
+        flex-wrap: nowrap;
+    }
+    .gallery__row:has(.gallery__item:nth-child(2)):not(:has(.gallery__item:nth-child(3))) .gallery__item {
+        flex-basis: 0;
+        min-width: 0;
+    }
 }
 
 /* Community service lead — one statement, then the two phases side by side */
@@ -2990,6 +3043,15 @@ section.section--entries-editorial:not(#entries) + .site-bottom .cta-strip--spli
         flex-shrink: 0;
     }
 
+    /* Wrapper around the intro/split/cta panels — sizes to their combined
+       vw widths so the pin/translate math above (300vw total) still holds. */
+    .h-panel-rail {
+        display: flex;
+        flex: 0 0 200vw; /* 50vw intro + 100vw split + 50vw cta */
+        width: 200vw;
+        height: 100%;
+    }
+
 }
 
 /* ═══════════════════════════════════════════
@@ -3616,7 +3678,9 @@ section.section--entries-editorial:not(#entries) + .site-bottom .cta-strip--spli
 .h-panel__btn--filled { color: #fff; background: var(--c-gold); border-color: var(--c-gold); }
 .h-panel__btn--filled:hover { background: var(--c-navy); border-color: var(--c-navy); }
 
-/* Mobile / tablet — collapse to vertical stack, no sticky pin */
+/* Mobile / tablet — no sticky pin; the intro/split/cta panels become their
+   own native swipeable, snap-scrolling carousel instead of stacking (which
+   used to splay 100vh/50vw panels into a long, awkward vertical column). */
 @media (max-width: 1024px) {
     .h-scroll { height: auto; }
     .h-scroll__sticky {
@@ -3629,16 +3693,63 @@ section.section--entries-editorial:not(#entries) + .site-bottom .cta-strip--spli
         width: 100%;
         transform: none !important;
     }
-    .h-panel {
-        flex: 0 0 auto;
+
+    .entry-stage--with-h .entry-stage__pin { display: block; }
+    .entry-stage--with-h .entry-stage__track {
+        display: block;
         width: 100%;
         height: auto;
-        min-height: 80vh;
     }
+    .entry-stage--with-h .entry-stage__inner {
+        width: 100%;
+        height: auto;
+        padding-block: clamp(2.5rem, 8vw, 4rem);
+    }
+
+    .h-panel-rail {
+        display: flex;
+        width: 100%;
+        overflow-x: auto;
+        overflow-y: hidden;
+        scroll-snap-type: x mandatory;
+        scroll-padding-left: 6vw;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+        padding: 0 6vw 1.5rem;
+        gap: 3vw;
+    }
+    .h-panel-rail::-webkit-scrollbar { display: none; }
+
+    .h-panel {
+        flex: 0 0 auto;
+        width: 88vw;
+        height: auto;
+        min-height: 62vh;
+        scroll-snap-align: start;
+        scroll-snap-stop: always;
+    }
+
+    .h-panel--split {
+        width: 88vw;
+        min-height: 62vh;
+        display: flex;
+        flex-direction: row;
+        gap: 0;
+    }
+
+    .h-panel__split-stack,
+    .h-panel__half--full {
+        flex: 0 0 50%;
+        width: 50%;
+        height: auto;
+        min-height: 62vh;
+    }
+
     .h-panel--intro,
     .h-panel--cta {
-        min-height: 60vh;
-        padding: 5rem 1.5rem;
+        min-height: 62vh;
+        padding: 3rem 1.5rem;
     }
     .h-panel__inner { padding: 0; max-width: 100%; }
 }
@@ -3816,4 +3927,44 @@ section.section--entries-editorial:not(#entries) + .site-bottom .cta-strip--spli
 @media (max-width: 900px) {
     .home-who__awards { gap: 0.75rem; }
     .home-who__logo img { width: 40px; height: 40px; }
+}
+
+/* Below ~640px the bleeding plan drawing has no room to breathe without
+   overlapping the copy — drop the absolute bleed and place it as a normal,
+   cropped strip after the text instead. No overlap, still feels like the
+   same studio drawing, just tamed for a narrow column. */
+@media (max-width: 640px) {
+    .home-who {
+        display: flex;
+        flex-direction: column;
+        padding: calc(clamp(3rem, 5vw, 5rem) + 88px) 0 3.5rem;
+    }
+
+    .home-who__art {
+        position: static;
+        order: 2;
+        inset: auto;
+        left: auto; right: auto; top: auto; bottom: auto;
+        width: 100%;
+        height: 200px;
+        overflow: hidden;
+        transform: none;
+        margin-top: 2.75rem;
+    }
+
+    .home-who__plan {
+        position: static;
+        display: block;
+        width: 100%;
+        height: 100%;
+        max-width: none;
+        object-fit: cover;
+        object-position: 30% 70%;
+        transform: scaleY(-1);
+        transform-origin: center;
+        margin-top: 0;
+        opacity: 1;
+    }
+
+    .home-who__inner { order: 1; }
 }
