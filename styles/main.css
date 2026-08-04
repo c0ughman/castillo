@@ -2958,6 +2958,14 @@ section.section--entries-editorial:not(#entries) + .site-bottom .cta-strip--spli
     .entry-stage__inner {
         width: 100%;
         position: relative;
+        /* entry__visual/entry__copy inside carry explicit z-index (1/2) for
+           the image-behind-text layering during the expand animation.
+           Without a stacking context here, that z-index escapes this box
+           and outranks the *next* panel in the pan rail (which has no
+           z-index of its own) — so the incoming panel would render behind
+           the outgoing teaser image instead of in front of it. Isolate so
+           the layering stays local and panels stack in normal DOM order. */
+        isolation: isolate;
     }
 
     .entry-stage .entry--editorial {
@@ -3392,6 +3400,23 @@ section.section--entries-editorial:not(#entries) + .site-bottom .cta-strip--spli
     margin: 0 auto;
 }
 
+/* Panels are full viewport width now (see the mobile pan-panel rules
+   above), but the copy inside was still boxed down with desktop-scale
+   side padding, reading narrower than the panel itself. Open it up on
+   mobile — intro (the panel right after the teaser image expands) gets
+   the most room since it's mostly a single short statement; the rest
+   get a smaller, ~30% reduction in padding. */
+@media (max-width: 1024px) {
+    .h-panel__inner {
+        max-width: 100%;
+        padding: 0 clamp(1.4rem, 4vw, 2.5rem);
+    }
+
+    .h-panel--intro .h-panel__inner {
+        padding: 0 0.85rem;
+    }
+}
+
 .h-panel__drawing {
     color: var(--c-gold);
     width: clamp(180px, 32vw, 280px);
@@ -3482,7 +3507,7 @@ section.section--entries-editorial:not(#entries) + .site-bottom .cta-strip--spli
 /* Related-card images rest at a soft navy tint so they read as distinct
    from the main gallery; hovering fades it out into the usual gold hover. */
 .related-card .h-panel__overlay {
-    box-shadow: inset 0 0 0 999px rgba(27, 58, 80, 0.55);
+    box-shadow: inset 0 0 0 999px rgba(74, 112, 145, 0.25);
     transition: box-shadow 0.5s ease;
 }
 
