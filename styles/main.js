@@ -230,11 +230,18 @@
             const initCy = (mRect.top  - pinRect.top)  + mRect.height / 2;
             const vw = window.innerWidth;
             const vh = window.innerHeight;
+            // trackTravel only changes on resize (it's scrollWidth/offsetWidth,
+            // both layout-dependent) — cache it here instead of reading it
+            // every scroll frame in update(), which forced an extra layout
+            // pass on top of the unavoidable one below and was a real
+            // contributor to the janky/choppy motion on mobile.
+            const trackTravel = track ? Math.max(0, track.scrollWidth - pin.offsetWidth) : 0;
             data.set(stage, {
                 media,
                 track,
                 pin,
                 reverse,
+                trackTravel,
                 // "Cover" scale — fills both axes. A width-only scale left
                 // portrait/mobile viewports (tall relative to the media's
                 // own box) with dead space above and below the image.
@@ -246,47 +253,55 @@
 
         const smoothstep = (t) => t * t * (3 - 2 * t);
 
-        const update = (stage) => {
-            const d = data.get(stage);
-            if (!d) return;
-            const rect = stage.getBoundingClientRect();
-            const pinScroll = rect.height - window.innerHeight;
-            if (pinScroll <= 0) return;
-            const raw = Math.max(0, Math.min(1, -rect.top / pinScroll));
+        // Two-phase update: read every stage's rect first, then write all
+        // style mutations after. Reading stage2's rect *after* stage1 had
+        // already written new transforms/custom-properties would force a
+        // synchronous layout recalc mid-loop (layout thrashing) — batching
+        // reads-then-writes avoids that entirely.
+        const updateAll = () => {
+            const frames = [];
+            for (const stage of stages) {
+                const d = data.get(stage);
+                if (!d) continue;
+                const rect = stage.getBoundingClientRect();
+                const pinScroll = rect.height - window.innerHeight;
+                if (pinScroll <= 0) continue;
+                frames.push({ stage, d, raw: Math.max(0, Math.min(1, -rect.top / pinScroll)) });
+            }
 
-            if (d.track) {
-                // Phase 1: image expansion (0 → phase1End). Phase 2: horizontal track translation.
-                const phase1End = 0.25;
-                const p1 = Math.max(0, Math.min(1, (raw - 0.03) / (phase1End - 0.03)));
-                const p2 = Math.max(0, Math.min(1, (raw - phase1End) / (1 - phase1End)));
-                const p = smoothstep(p1);
-                const s = 1 + (d.scale - 1) * p;
-                d.media.style.transform =
-                    `translate3d(${d.tx * p}px, ${d.ty * p}px, 0) scale(${s})`;
-                stage.style.setProperty('--p', p.toFixed(3));
+            for (const { stage, d, raw } of frames) {
+                if (d.track) {
+                    // Phase 1: image expansion (0 → phase1End). Phase 2: horizontal track translation.
+                    const phase1End = 0.25;
+                    const p1 = Math.max(0, Math.min(1, (raw - 0.03) / (phase1End - 0.03)));
+                    const p2 = Math.max(0, Math.min(1, (raw - phase1End) / (1 - phase1End)));
+                    const p = smoothstep(p1);
+                    const s = 1 + (d.scale - 1) * p;
+                    d.media.style.transform =
+                        `translate3d(${d.tx * p}px, ${d.ty * p}px, 0) scale(${s})`;
+                    stage.style.setProperty('--p', p.toFixed(3));
 
-                const trackTravel = d.track.scrollWidth - d.pin.offsetWidth;
-                if (trackTravel > 0) {
-                    const sp2 = smoothstep(p2);
-                    // Reversed: start at -trackTravel and ease toward 0 (track moves right,
-                    // panels enter from the left, CTA finishes flush at the viewport's left edge).
-                    const translateX = d.reverse
-                        ? -trackTravel * (1 - sp2)
-                        : -trackTravel * sp2;
-                    d.track.style.transform = `translate3d(${translateX}px, 0, 0)`;
+                    if (d.trackTravel > 0) {
+                        const sp2 = smoothstep(p2);
+                        // Reversed: start at -trackTravel and ease toward 0 (track moves right,
+                        // panels enter from the left, CTA finishes flush at the viewport's left edge).
+                        const translateX = d.reverse
+                            ? -d.trackTravel * (1 - sp2)
+                            : -d.trackTravel * sp2;
+                        d.track.style.transform = `translate3d(${translateX}px, 0, 0)`;
+                    }
+                } else {
+                    const tNorm = Math.max(0, Math.min(1, (raw - 0.08) / 0.92));
+                    const p = smoothstep(tNorm);
+                    const s = 1 + (d.scale - 1) * p;
+                    d.media.style.transform =
+                        `translate3d(${d.tx * p}px, ${d.ty * p}px, 0) scale(${s})`;
+                    stage.style.setProperty('--p', p.toFixed(3));
                 }
-            } else {
-                const tNorm = Math.max(0, Math.min(1, (raw - 0.08) / 0.92));
-                const p = smoothstep(tNorm);
-                const s = 1 + (d.scale - 1) * p;
-                d.media.style.transform =
-                    `translate3d(${d.tx * p}px, ${d.ty * p}px, 0) scale(${s})`;
-                stage.style.setProperty('--p', p.toFixed(3));
             }
         };
 
         const measureAll = () => stages.forEach(measure);
-        const updateAll  = () => stages.forEach(update);
 
         const init = () => { measureAll(); updateAll(); };
         if (document.readyState === 'complete') init();

@@ -3221,6 +3221,11 @@ section.section--entries-editorial:not(#entries) + .site-bottom .cta-strip--spli
     position: relative;
     overflow: hidden;
     transition: z-index 0.3s ease;
+    /* Each slide's own paint work (image, text-shadow/color animation)
+       doesn't need to invalidate anything outside it — scoping that with
+       contain keeps the browser's per-frame paint work local instead of
+       re-checking the whole rail during the pan/expand scroll animation. */
+    contain: paint;
 }
 
 .h-panel:hover {
@@ -3274,6 +3279,35 @@ section.section--entries-editorial:not(#entries) + .site-bottom .cta-strip--spli
     .h-panel-rail {
         flex: 0 0 400vw;
         width: 400vw;
+    }
+
+    /* Featured-projects panel: on a wide desktop window, two columns (one
+       big project left, two smaller ones stacked right) reads fine. On a
+       narrow phone that column-split leaves everything cramped. Per
+       feedback, flip to two ROWS instead — top row: the two smaller
+       projects side by side; bottom row: the one bigger/featured project,
+       full width. Every project image goes edge-to-edge width either way,
+       it's just organized to fit a portrait screen instead of a wide one. */
+    .h-panel--split {
+        flex-direction: column;
+    }
+
+    /* Both children have an explicit `flex: 0 0 50vw` above — flex-basis
+       wins over `width` for flex sizing when both are set, so the flex
+       shorthand has to be overridden here too, not just width/height. */
+    .h-panel__split-stack {
+        order: 1;
+        flex: 0 0 38vh;
+        flex-direction: row;
+        width: 100%;
+        height: 38vh;
+    }
+
+    .h-panel__half--full {
+        order: 2;
+        flex: 0 0 62vh;
+        width: 100%;
+        height: 62vh;
     }
 }
 
