@@ -121,6 +121,26 @@ Las Catalinas gallery order reshuffled as requested.
 
 ---
 
+## ✅ Done — showcase, home duplicates, El Prado bento (2026-08-03)
+
+- [x] **`.project-showcase` padding removed** — it had `padding: 0 clamp(1rem,3vw,2rem)` over a navy background, so every wide image sat inset with navy bars down both sides.
+- [x] **Home page repeats fixed.** Featured projects appear in **neither** client document — narrativa's Home is hero + two service panels + closing CTA only, and brief 3.1 says of the entry cards: *"No project names at this level — atmosphere and category only."* Per instruction, the duplicated featured projects were swapped out rather than the entry images changed: Plaza del Mercado → El Encanto, Casa Los Monos → Villa Fontana, and the Residential intro drawing → Casa Menta. Every project now appears exactly once on the home page.
+- [x] **Community sub-nav removed** — the Urban Design / Architecture / Selected Projects selector was left over from the split layout.
+- [x] **El Encanto** — the mid-page CAD map (`master-plan-01`) replaced with `casa-club-05`; the map moves to the gallery tail.
+- [x] **Ciudad del Este** — hero re-cropped from the original with the **top 30% cut** (was mostly sky); `master-plan-01` **rotated 90°** into a landscape plate (`master-plan-01-rotated`); first and second content images swapped, so `phase-1-03` sits under the hero and `aerial-01` beside the Master Plan text.
+- [x] **Los Altos Flats** — drawing and the photo beside the first text block swapped.
+- [x] **Nueva Miramar** — first and third content images swapped (`view-05` under the hero, `view-01` lower down).
+- [x] **Barrio El Prado rebuilt as per-house sections.** Each house now has its own tinted section with a large title, its elevation drawing beside the title, and its photography beneath. Tints sampled from each facade: Aquática `#E9F1ED`, Paseo del Parque 33 `#ECEDF4`, Paseo del Parque 36 `#F8F2DC`, Ruta del Llano 61 `#F8EAE2`. No body text yet, by request.
+
+⚠️ **Ruta del Llano 61 has no drawing** in the approved folder — its section uses the best facade photo in the drawing slot. The other three houses each have a real elevation.
+
+### Client to supply
+- [ ] More images for **Palmerola** (4) and **Santa María** (5) — too few to improve the sequence
+- [ ] An elevation drawing for **Ruta del Llano 61**
+- [ ] Body text per house for the El Prado sections
+
+---
+
 ## 🟡 Bigger design/dev work (takes more time)
 
 - [ ] **Spanish language layer** — narrativa supplies complete ES for every page; the site has no toggle yet. Brief 4.1: toggle must preserve page context, not redirect home. **Next session.**
