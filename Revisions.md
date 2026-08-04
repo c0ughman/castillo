@@ -68,6 +68,27 @@ Last updated: 2026-07-30
 
 ---
 
+## ✅ Done — residential imagery pass (2026-08-03)
+
+Heroes on the residential pages now lead with the watercolor drawings rather than photography:
+
+- [x] **Casa Los Monos** — hero is the watercolor perspective (`los-monos-06`); the courtyard photo (`los-monos-01`) is the plate below it
+- [x] **Casa Virginia** — hero is the `VIRGINIA 07` elevation; the photo he liked (`virginia-01`) moves to the closing slot
+- [x] **Casa Menta** — hero is the watercolor section (`menta-08`); the old hero photo moves to the gallery tail
+- [x] **Casas en Barrio El Prado** — hero is `ruta-del-llano-61-04`; the old hero joins the Aquática group. **No drawing exists in this folder**, so this hero is photography.
+- [x] **Villa Fontana** — photo hero kept; `fontana-03` moves directly under it and the watercolor elevation (`fontana-04`) now sits beside the first block of text
+
+- [x] **New `hero--drawing` treatment** — `.hero--project` crops edge-to-edge with `object-fit: cover` and has no scrim, which would have cropped the drawings and left white overlay text on white paper. Drawing heroes now sit contained on a navy field with a top/bottom scrim so the nav and hero text stay legible.
+
+Every residential image is now used exactly once per page — no duplicates, no orphans.
+
+### Still open on Residential
+
+- [ ] **Barrio El Prado bento redesign** — currently four stacked titled galleries. Wants restructuring into per-house sections (title, gallery, drawing, text) in a bento layout keyed to each house's colour. Deferred by request.
+- [ ] **Casa Curuba hero** — not mentioned in this pass, so left as photography. Its drawing-style image is `curuba-06`. Confirm whether the drawing-hero rule should apply here too.
+
+---
+
 ## 🟡 Bigger design/dev work (takes more time)
 
 - [ ] **Spanish language layer** — narrativa supplies complete ES for every page; the site has no toggle yet. Brief 4.1: toggle must preserve page context, not redirect home. **Next session.**

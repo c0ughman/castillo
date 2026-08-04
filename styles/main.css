@@ -629,6 +629,35 @@ button { font: inherit; cursor: pointer; }
 .hero--page    { height: 56vh; min-height: 420px; max-height: 600px; }
 .hero--project { height: 72vh; min-height: 520px; max-height: 760px; }
 
+/* Drawing hero — watercolor elevations and sections sit on white paper, so
+   they cannot be cropped edge-to-edge like photography. Contain the sheet on
+   a navy field and scrim top and bottom so the nav and overlay text read. */
+.hero--drawing { background: var(--c-navy); }
+
+.hero--drawing .hero__slide {
+    object-fit: contain;
+    padding: 5.5rem 6% 7.5rem;
+}
+
+.hero--drawing .hero__bg::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+    background: linear-gradient(
+        to bottom,
+        rgba(12, 39, 53, 0.78) 0%,
+        rgba(12, 39, 53, 0) 20%,
+        rgba(12, 39, 53, 0) 52%,
+        rgba(12, 39, 53, 0.92) 100%
+    );
+}
+
+@media (max-width: 768px) {
+    .hero--drawing .hero__slide { padding: 4.5rem 1.25rem 6.5rem; }
+}
+
 
 .hero--project .hero__title { font-size: clamp(1.8rem, 2.7vw, 2.4rem); margin-bottom: 0.4rem; }
 
