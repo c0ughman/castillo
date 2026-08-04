@@ -717,6 +717,20 @@ button { font: inherit; cursor: pointer; }
     align-items: start;
 }
 
+/* Single-column statement with the drawing inline between the copy — image
+   sits after the second paragraph on desktop (broken up mid-read instead of
+   sitting beside it), but moves back above all the copy on mobile. */
+.statement-layout--split {
+    max-width: 760px;
+    display: flex;
+    flex-direction: column;
+    gap: clamp(2rem, 5vw, 3rem);
+}
+
+.statement-layout--split .statement-layout__drawing { order: 2; }
+.statement-layout--split .statement--top { order: 1; }
+.statement-layout--split .statement--bottom { order: 3; }
+
 .statement-layout__drawing {
     margin: 0;
     align-self: start;
@@ -744,7 +758,7 @@ button { font: inherit; cursor: pointer; }
 
 .statement p:last-child { margin-bottom: 0; }
 
-.statement p:first-child::first-letter {
+.statement--top p:first-child::first-letter {
     font-family: var(--f-display);
     font-weight: 300;
     font-size: 3rem;
@@ -767,6 +781,11 @@ button { font: inherit; cursor: pointer; }
     .statement {
         max-width: 100%;
     }
+
+    /* Drawing goes back above all the copy on mobile. */
+    .statement-layout--split .statement-layout__drawing { order: 0; }
+    .statement-layout--split .statement--top { order: 1; }
+    .statement-layout--split .statement--bottom { order: 2; }
 }
 
 .founder {
@@ -1975,9 +1994,9 @@ body.page-category .section--white .projects-stack {
     gap: clamp(0.7rem, 1.4vw, 1.15rem);
 }
 
-.related-card { overflow: hidden; background: var(--c-navy); min-height: 290px; }
+.related-card { overflow: hidden; background: var(--c-navy); min-height: 220px; }
 
-.related-card:nth-of-type(1) { grid-column: 1; grid-row: 1 / 3; min-height: 600px; }
+.related-card:nth-of-type(1) { grid-column: 1; grid-row: 1 / 3; min-height: 460px; }
 .related-card:nth-of-type(2) { grid-column: 2; grid-row: 1; }
 .related-card:nth-of-type(3) { grid-column: 3; grid-row: 1; }
 
@@ -2010,13 +2029,13 @@ body.page-category .section--white .projects-stack {
     align-items: center;
     gap: 1.25rem;
     padding: clamp(1.9rem, 3.2vw, 2.7rem) clamp(1.8rem, 3.2vw, 2.8rem);
-    background: var(--c-navy);
-    background-image: var(--footer-bg-shine);
-    color: #fff;
+    background: transparent;
+    border: 1.5px solid var(--c-navy);
+    color: var(--c-navy);
     transition: background-color 0.4s ease;
 }
 
-.related-cta:hover { background-color: #123246; }
+.related-cta:hover { background-color: rgba(12, 39, 53, 0.05); }
 
 .related-cta__eyebrow {
     font-family: var(--f-sans);
@@ -2024,7 +2043,7 @@ body.page-category .section--white .projects-stack {
     font-weight: 500;
     letter-spacing: 0.16em;
     text-transform: uppercase;
-    color: var(--c-gold-light);
+    color: var(--c-navy);
     white-space: nowrap;
 }
 
@@ -2047,7 +2066,7 @@ body.page-category .section--white .projects-stack {
 
 @media (max-width: 900px) {
     .related-grid { grid-template-columns: 1fr 1fr; grid-template-rows: auto auto auto; }
-    .related-card:nth-of-type(1) { grid-column: 1 / -1; grid-row: 1; min-height: 380px; }
+    .related-card:nth-of-type(1) { grid-column: 1 / -1; grid-row: 1; min-height: 228px; }
     .related-card:nth-of-type(2) { grid-column: 1; grid-row: 2; }
     .related-card:nth-of-type(3) { grid-column: 2; grid-row: 2; }
     .related-cta { grid-column: 1 / -1; grid-row: 3; }
@@ -3041,12 +3060,13 @@ section.section--entries-editorial:not(#entries) + .site-bottom .cta-strip--spli
         flex-shrink: 0;
     }
 
-    /* Wrapper around the intro/split/cta panels — sizes to their combined
-       vw widths so the pin/translate math above (300vw total) still holds. */
+    /* Wrapper around the entry teaser + intro/split/cta panels — sizes to
+       their combined vw widths so the pin/translate math above (300vw
+       total) still holds. */
     .h-panel-rail {
         display: flex;
-        flex: 0 0 200vw; /* 50vw intro + 100vw split + 50vw cta */
-        width: 200vw;
+        flex: 0 0 300vw; /* 100vw entry + 50vw intro + 100vw split + 50vw cta */
+        width: 300vw;
         height: 100%;
     }
 
@@ -3676,9 +3696,12 @@ section.section--entries-editorial:not(#entries) + .site-bottom .cta-strip--spli
 .h-panel__btn--filled { color: #fff; background: var(--c-gold); border-color: var(--c-gold); }
 .h-panel__btn--filled:hover { background: var(--c-navy); border-color: var(--c-navy); }
 
-/* Mobile / tablet — no sticky pin; the intro/split/cta panels become their
-   own native swipeable, snap-scrolling carousel instead of stacking (which
-   used to splay 100vh/50vw panels into a long, awkward vertical column). */
+/* Mobile / tablet — no sticky pin; the entry teaser + intro/split/cta
+   panels all become one native swipeable, snap-scrolling carousel — the
+   same continuous "slide through everything" feel as the desktop pin,
+   instead of stacking (which used to splay 100vh/50vw panels into a
+   long, awkward vertical column, with the teaser stuck as a separate
+   static block above it). Both home category sections share this setup. */
 @media (max-width: 1024px) {
     .h-scroll { height: auto; }
     .h-scroll__sticky {
@@ -3698,11 +3721,6 @@ section.section--entries-editorial:not(#entries) + .site-bottom .cta-strip--spli
         width: 100%;
         height: auto;
     }
-    .entry-stage--with-h .entry-stage__inner {
-        width: 100%;
-        height: auto;
-        padding-block: clamp(2.5rem, 8vw, 4rem);
-    }
 
     .h-panel-rail {
         display: flex;
@@ -3719,6 +3737,7 @@ section.section--entries-editorial:not(#entries) + .site-bottom .cta-strip--spli
     }
     .h-panel-rail::-webkit-scrollbar { display: none; }
 
+    .entry-stage--with-h .entry-stage__inner,
     .h-panel {
         flex: 0 0 auto;
         width: 88vw;
@@ -3726,6 +3745,12 @@ section.section--entries-editorial:not(#entries) + .site-bottom .cta-strip--spli
         min-height: 62vh;
         scroll-snap-align: start;
         scroll-snap-stop: always;
+    }
+
+    .entry-stage--with-h .entry-stage__inner {
+        display: flex;
+        align-items: center;
+        padding-block: 0;
     }
 
     .h-panel--split {
