@@ -236,12 +236,40 @@
             // pass on top of the unavoidable one below and was a real
             // contributor to the janky/choppy motion on mobile.
             const trackTravel = track ? Math.max(0, track.scrollWidth - pin.offsetWidth) : 0;
+
+            // Mobile only: glide the teaser's caption to true screen-center
+            // as the image expands, instead of leaving it wherever it sits
+            // in the stacked image/text card — that static position reads
+            // as low/small once the image behind it goes full-screen.
+            // Desktop's copy sits beside the image already and stays put.
+            let copy = null, copyTx = 0, copyTy = 0;
+            if (vw <= 1024) {
+                copy = stage.querySelector('.entry__copy');
+                if (copy) {
+                    copy.style.transform = '';
+                    const cRect = copy.getBoundingClientRect();
+                    const initCcx = (cRect.left - pinRect.left) + cRect.width / 2;
+                    const initCcy = (cRect.top  - pinRect.top)  + cRect.height / 2;
+                    copyTx = vw / 2 - initCcx;
+                    copyTy = vh / 2 - initCcy;
+                }
+            }
+
             data.set(stage, {
                 media,
                 track,
                 pin,
                 reverse,
                 trackTravel,
+                copy,
+                copyTx,
+                copyTy,
+                // Desktop's zoom (phase1End 0.25 below) stays exactly as it
+                // was. Mobile spreads the same zoom over more scroll
+                // distance — still feedback that the expand still felt a
+                // little glitchy; less scale-per-pixel-scrolled reads
+                // smoother without changing the desktop feel at all.
+                isMobile: vw <= 1024,
                 // "Cover" scale — fills both axes. A width-only scale left
                 // portrait/mobile viewports (tall relative to the media's
                 // own box) with dead space above and below the image.
@@ -272,7 +300,9 @@
             for (const { stage, d, raw } of frames) {
                 if (d.track) {
                     // Phase 1: image expansion (0 → phase1End). Phase 2: horizontal track translation.
-                    const phase1End = 0.25;
+                    // Desktop keeps the original 0.25; mobile spreads the zoom over a bit
+                    // more scroll distance so it reads as easing in rather than snapping.
+                    const phase1End = d.isMobile ? 0.34 : 0.25;
                     const p1 = Math.max(0, Math.min(1, (raw - 0.03) / (phase1End - 0.03)));
                     const p2 = Math.max(0, Math.min(1, (raw - phase1End) / (1 - phase1End)));
                     const p = smoothstep(p1);
@@ -280,6 +310,10 @@
                     d.media.style.transform =
                         `translate3d(${d.tx * p}px, ${d.ty * p}px, 0) scale(${s})`;
                     stage.style.setProperty('--p', p.toFixed(3));
+
+                    if (d.copy) {
+                        d.copy.style.transform = `translate3d(${d.copyTx * p}px, ${d.copyTy * p}px, 0)`;
+                    }
 
                     if (d.trackTravel > 0) {
                         const sp2 = smoothstep(p2);
@@ -319,7 +353,9 @@
             resizeT = setTimeout(() => {
                 stages.forEach(s => {
                     const d = data.get(s);
-                    if (d) d.media.style.transform = '';
+                    if (!d) return;
+                    d.media.style.transform = '';
+                    if (d.copy) d.copy.style.transform = '';
                 });
                 init();
             }, 120);

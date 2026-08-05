@@ -2919,14 +2919,31 @@ section.section--entries-editorial:not(#entries) + .site-bottom .cta-strip--spli
         padding-top: 0;
     }
 
+    /* The teaser card's copy used to just sit wherever it fell in the
+       stacked image/text grid — fine at rest, but once the image expands
+       full-screen behind it (see the scroll-pin JS), that static position
+       reads as low and small against a now-huge photo. Center it instead;
+       main.js glides it from its resting spot to true screen-center in
+       sync with the same expand progress driving the image. */
+    .entry-stage .entry__copy {
+        text-align: center;
+    }
+
+    .entry-stage .entry__link {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
     /* The scroll-pin's expand phase covers the media box up to full-screen.
        At the default 16/10 (landscape) aspect ratio, a portrait phone box is
        so much shorter than the viewport that the cover-scale needed is
        enormous (~4x) — the image visibly "pops"/snaps instead of easing in.
        Starting from a portrait-ish box on narrow screens keeps that scale
-       modest so the same animation reads as a smooth zoom, not a glitch. */
+       modest so the same animation reads as a smooth zoom, not a glitch.
+       Taller than a plain 3/4 photo crop specifically to cut the needed
+       scale down further still (still feedback: "a bit glitchy"). */
     .entry-stage .entry__media {
-        aspect-ratio: 3 / 4;
+        aspect-ratio: 3 / 5;
     }
 
 }
@@ -2958,14 +2975,6 @@ section.section--entries-editorial:not(#entries) + .site-bottom .cta-strip--spli
     .entry-stage__inner {
         width: 100%;
         position: relative;
-        /* entry__visual/entry__copy inside carry explicit z-index (1/2) for
-           the image-behind-text layering during the expand animation.
-           Without a stacking context here, that z-index escapes this box
-           and outranks the *next* panel in the pan rail (which has no
-           z-index of its own) — so the incoming panel would render behind
-           the outgoing teaser image instead of in front of it. Isolate so
-           the layering stays local and panels stack in normal DOM order. */
-        isolation: isolate;
     }
 
     .entry-stage .entry--editorial {
@@ -3221,11 +3230,6 @@ section.section--entries-editorial:not(#entries) + .site-bottom .cta-strip--spli
     position: relative;
     overflow: hidden;
     transition: z-index 0.3s ease;
-    /* Each slide's own paint work (image, text-shadow/color animation)
-       doesn't need to invalidate anything outside it — scoping that with
-       contain keeps the browser's per-frame paint work local instead of
-       re-checking the whole rail during the pan/expand scroll animation. */
-    contain: paint;
 }
 
 .h-panel:hover {
@@ -3315,6 +3319,20 @@ section.section--entries-editorial:not(#entries) + .site-bottom .cta-strip--spli
         flex: 0 0 62vh;
         width: 100%;
         height: 62vh;
+    }
+
+    /* Mobile-only: contain paint work to each slide (perf, keeps the pan
+       animation's per-frame paint local instead of rechecking the whole
+       rail) and isolate the teaser's z-index (1/2, image-behind-text
+       layering) so it can't leak out and outrank the next panel in the
+       rail. Both scoped here rather than left global, so desktop's
+       rendering is untouched from its pre-mobile-work state. */
+    .h-panel {
+        contain: paint;
+    }
+
+    .entry-stage__inner {
+        isolation: isolate;
     }
 }
 
@@ -3433,6 +3451,38 @@ section.section--entries-editorial:not(#entries) + .site-bottom .cta-strip--spli
 .entry-stage--reverse-h .h-panel--cta .h-panel__copy { margin-left: 0; margin-right: auto; }
 .entry-stage--reverse-h .h-panel--cta .h-panel__actions { justify-content: flex-start; }
 
+/* CTA panel is edge-pinned on desktop (right for the forward section, left
+   for the reversed one) — reads fine beside a wide image, but on mobile it
+   just looks off-center against the full-width background. Center it
+   horizontally on mobile instead of edge-aligning either way; vertical
+   position (flex-end, i.e. toward the bottom of the panel) is unchanged.
+   Placed after every .h-panel--cta / reverse-h rule above so it wins the
+   cascade at equal specificity. */
+@media (max-width: 1024px) {
+    .h-panel--cta {
+        justify-content: center;
+    }
+
+    .h-panel--cta .h-panel__inner,
+    .entry-stage--reverse-h .h-panel--cta .h-panel__inner {
+        text-align: center;
+    }
+
+    .h-panel--cta .h-panel__title,
+    .h-panel--cta .h-panel__copy,
+    .entry-stage--reverse-h .h-panel--cta .h-panel__title,
+    .entry-stage--reverse-h .h-panel--cta .h-panel__copy {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .h-panel--cta .h-panel__actions,
+    .entry-stage--reverse-h .h-panel--cta .h-panel__actions {
+        align-items: center;
+        justify-content: center;
+    }
+}
+
 .h-panel__inner {
     display: flex;
     flex-direction: column;
@@ -3547,13 +3597,16 @@ section.section--entries-editorial:not(#entries) + .site-bottom .cta-strip--spli
 
 /* Related-card images rest at a soft navy tint so they read as distinct
    from the main gallery; hovering fades it out into the usual gold hover. */
-.related-card .h-panel__overlay {
-    box-shadow: inset 0 0 0 999px rgba(74, 112, 145, 0.25);
-    transition: box-shadow 0.5s ease;
+.related-card .h-panel__overlay::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at center, transparent 35%, rgba(74, 112, 145, 0.4) 100%);
+    transition: opacity 0.5s ease;
 }
 
-.related-card:hover .h-panel__overlay {
-    box-shadow: inset 0 0 0 999px rgba(12, 39, 53, 0);
+.related-card:hover .h-panel__overlay::after {
+    opacity: 0;
 }
 
 .h-panel__content {
@@ -4046,4 +4099,76 @@ section.section--entries-editorial:not(#entries) + .site-bottom .cta-strip--spli
     }
 
     .home-who__inner { order: 1; }
+}
+
+/* ═══════════════════════════════════════════
+   HOME — mobile type/button polish
+   Placed last so these single-class overrides reliably win the cascade
+   over their base (often much-earlier-in-file) declarations, without
+   having to hunt down every prior occurrence. Scoped to max-width:1024px
+   only — desktop keeps its original sizing untouched.
+   ═══════════════════════════════════════════ */
+@media (max-width: 1024px) {
+    /* Teaser card headline reads as a centered hero caption now (see the
+       JS that glides it to screen-center during the expand) — the old
+       ~18px floor was sized for a small card next to its photo, not a
+       caption over a full-bleed image. */
+    .entry--editorial .entry__category {
+        font-size: 9.5px;
+    }
+    .entry--editorial .entry__title {
+        font-size: clamp(1.6rem, 6vw, 2.15rem);
+        line-height: 1.2;
+    }
+    .entry--editorial .entry__text {
+        font-size: 14px;
+    }
+
+    /* Buttons — "a bit fatter" per feedback, across every button style
+       that appears on the homepage. */
+    .btn {
+        padding: 0.9rem 1.9rem;
+        font-size: 10.5px;
+    }
+    .entry--editorial .entry__link {
+        padding: 0.85rem 1.6rem;
+        font-size: 9.5px;
+    }
+    .entry-stage .entry__link {
+        padding-block: calc(0.8rem + var(--pe) * 0.35rem);
+        padding-inline: calc(1.15rem + var(--pe) * 0.63rem);
+        font-size: 10px;
+    }
+    .h-panel__btn {
+        padding: 1.05rem 2rem;
+        font-size: 10.5px;
+    }
+    .h-panel__btn--small {
+        padding: 0.85rem 1.6rem;
+        font-size: 9.5px;
+    }
+
+    /* Panel copy — a touch more presence at phone width. */
+    .h-panel__eyebrow {
+        font-size: 10px;
+    }
+    .h-panel__title {
+        font-size: clamp(2rem, 7vw, 2.6rem);
+    }
+    .h-panel__copy {
+        font-size: 14.5px;
+    }
+}
+
+/* Featured-projects images (home page, mobile only, testing) — a slight
+   navy vignette fading in from the edges toward a clear center, purely to
+   lift contrast for the white location/title/button text sitting on top.
+   Layered alongside (not replacing) the existing bottom-darkening gradient. */
+@media (max-width: 1024px) {
+    .h-panel--split .h-panel__overlay,
+    .h-panel__split-stack .h-panel__overlay {
+        background:
+            radial-gradient(130% 130% at 50% 50%, transparent 62%, rgba(12, 39, 53, 0.4) 100%),
+            linear-gradient(to top, rgba(0, 0, 0, 0.15) 0%, transparent 65%);
+    }
 }
