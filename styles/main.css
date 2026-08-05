@@ -2906,16 +2906,21 @@ section.section--entries-editorial:not(#entries) + .site-bottom .cta-strip--spli
         margin-bottom: 0;
     }
 
+    /* Text above the image, image below — per feedback, the image-first
+       order read oddly once the copy also glides to screen-center during
+       the expand (see the JS/CSS further down): it looked like the text
+       was rising up "from the bottom." Swapped so the resting card already
+       reads top-to-bottom the way the animation ends up. */
     .entry--editorial .entry__visual,
     .entry--editorial-reverse .entry__visual {
         grid-column: 1;
-        grid-row: 1;
+        grid-row: 2;
     }
 
     .entry--editorial .entry__copy,
     .entry--editorial-reverse .entry__copy {
         grid-column: 1;
-        grid-row: 2;
+        grid-row: 1;
         padding-top: 0;
     }
 
@@ -2940,10 +2945,11 @@ section.section--entries-editorial:not(#entries) + .site-bottom .cta-strip--spli
        enormous (~4x) — the image visibly "pops"/snaps instead of easing in.
        Starting from a portrait-ish box on narrow screens keeps that scale
        modest so the same animation reads as a smooth zoom, not a glitch.
-       Taller than a plain 3/4 photo crop specifically to cut the needed
-       scale down further still (still feedback: "a bit glitchy"). */
+       Pulled back from 3/5 to 3/4 per feedback that the resting card image
+       was too tall/large before any scrolling — the extra scale this adds
+       is offset by the longer phase1 window below (already mobile-only). */
     .entry-stage .entry__media {
-        aspect-ratio: 3 / 5;
+        aspect-ratio: 3 / 4;
     }
 
 }
@@ -3451,35 +3457,18 @@ section.section--entries-editorial:not(#entries) + .site-bottom .cta-strip--spli
 .entry-stage--reverse-h .h-panel--cta .h-panel__copy { margin-left: 0; margin-right: auto; }
 .entry-stage--reverse-h .h-panel--cta .h-panel__actions { justify-content: flex-start; }
 
-/* CTA panel is edge-pinned on desktop (right for the forward section, left
-   for the reversed one) — reads fine beside a wide image, but on mobile it
-   just looks off-center against the full-width background. Center it
-   horizontally on mobile instead of edge-aligning either way; vertical
-   position (flex-end, i.e. toward the bottom of the panel) is unchanged.
-   Placed after every .h-panel--cta / reverse-h rule above so it wins the
-   cascade at equal specificity. */
+/* Correction per feedback: the CTA (end) panel keeps its original
+   edge-alignment on mobile too — right for the forward/community section,
+   left for the reversed/residential one — matching desktop. It's the
+   *middle* panel (intro, "From plan to place." / "Of place, of craft.")
+   that should be centered, not this one. See .h-panel--intro below. */
+
+/* Intro panel ("From plan to place." / "Of place, of craft.") — centered
+   on mobile. Placed after the base .h-panel--intro rules above so it wins
+   the cascade at equal specificity. */
 @media (max-width: 1024px) {
-    .h-panel--cta {
-        justify-content: center;
-    }
-
-    .h-panel--cta .h-panel__inner,
-    .entry-stage--reverse-h .h-panel--cta .h-panel__inner {
+    .h-panel--intro .h-panel__inner {
         text-align: center;
-    }
-
-    .h-panel--cta .h-panel__title,
-    .h-panel--cta .h-panel__copy,
-    .entry-stage--reverse-h .h-panel--cta .h-panel__title,
-    .entry-stage--reverse-h .h-panel--cta .h-panel__copy {
-        margin-left: auto;
-        margin-right: auto;
-    }
-
-    .h-panel--cta .h-panel__actions,
-    .entry-stage--reverse-h .h-panel--cta .h-panel__actions {
-        align-items: center;
-        justify-content: center;
     }
 }
 
@@ -4160,15 +4149,18 @@ section.section--entries-editorial:not(#entries) + .site-bottom .cta-strip--spli
     }
 }
 
-/* Featured-projects images (home page, mobile only, testing) — a slight
-   navy vignette fading in from the edges toward a clear center, purely to
-   lift contrast for the white location/title/button text sitting on top.
-   Layered alongside (not replacing) the existing bottom-darkening gradient. */
+/* Featured-projects images (home page, mobile only, testing) — a navy
+   vignette fading in from the edges toward a clear center, purely to lift
+   contrast for the white location/title/button text sitting on top.
+   Layered alongside (not replacing) the existing bottom-darkening gradient.
+   (First two passes at this used a radial-gradient sized in %, which reads
+   as ellipse-radius-relative-to-itself rather than box-edge-relative on a
+   rectangular box — barely visible in practice. An inset box-shadow hugs
+   the actual edges of the box directly and is far more predictable.) */
 @media (max-width: 1024px) {
     .h-panel--split .h-panel__overlay,
     .h-panel__split-stack .h-panel__overlay {
-        background:
-            radial-gradient(130% 130% at 50% 50%, transparent 62%, rgba(12, 39, 53, 0.4) 100%),
-            linear-gradient(to top, rgba(0, 0, 0, 0.15) 0%, transparent 65%);
+        background: linear-gradient(to top, rgba(0, 0, 0, 0.15) 0%, transparent 65%);
+        box-shadow: inset 0 0 3.5rem 0.5rem rgba(12, 39, 53, 0.55);
     }
 }
