@@ -1077,9 +1077,13 @@ button { font: inherit; cursor: pointer; }
 /* ═══════════════════════════════════════════
    Category page
    ═══════════════════════════════════════════ */
-/* Anchor scroll offset beneath fixed nav (subnav is no longer sticky) */
+/* Anchor scroll offset beneath fixed nav (subnav is no longer sticky).
+   #inquiry is the contact block at the foot of the category pages — the
+   home page's per-section "Contact us" buttons deep-link straight to it,
+   so it needs the same offset or it lands tucked under the fixed nav. */
 #urban-design,
-#architecture {
+#architecture,
+#inquiry {
     scroll-margin-top: calc(var(--nav-h) + 14px);
 }
 
