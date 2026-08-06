@@ -9,6 +9,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;1,300;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="alternate" hreflang="en" href="who-we-are.html">
+    <link rel="alternate" hreflang="es" href="es/who-we-are.html">
     <link rel="stylesheet" href="styles/main.css">
     <link rel="preload" as="image" href="assets/img/team/eduardo-castillo-cortes.webp">
     <link rel="preload" as="image" href="assets/img/drawings/top-down-plan.png">
@@ -27,9 +29,9 @@
             <li><a href="contact.html">Contact</a></li>
         </ul>
         <div class="nav__lang">
-            <button class="nav__lang-btn nav__lang-btn--active">EN</button>
+            <a href="who-we-are.html" class="nav__lang-btn nav__lang-btn--active" hreflang="en" lang="en" aria-current="true">EN</a>
             <span class="nav__lang-divider">/</span>
-            <button class="nav__lang-btn">ES</button>
+            <a href="es/who-we-are.html" class="nav__lang-btn" hreflang="es" lang="es">ES</a>
         </div>
         <button class="nav__mobile-toggle" id="mobileToggle" aria-label="Open menu">
             <span></span><span></span><span></span>
@@ -244,6 +246,12 @@
                     <div class="contact-detail">
                         <span class="contact-detail__label">Studio</span>
                         <span class="contact-detail__value">Guatemala City, Guatemala</span>
+                    </div>
+
+                    <div class="motif motif--form fade" aria-hidden="true">
+                        <div class="motif__item motif__item--above"><img src="assets/img/projects/nueva-miramar/view-01-1200.webp" alt="Nueva Miramar" loading="lazy"></div>
+                        <div class="motif__item motif__item--left"><img src="assets/img/projects/casa-curuba/curuba-04-1200.webp" alt="Facade detail" loading="lazy"></div>
+                        <div class="motif__item motif__item--corner"><img src="assets/img/projects/palmerola/view-01-1200.webp" alt="Palmerola" loading="lazy"></div>
                     </div>
                 </div>
 

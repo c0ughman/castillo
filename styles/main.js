@@ -1,6 +1,21 @@
-// Shared site behavior — nav scroll, mobile menu, fade-in, hero rotation, language toggle (mock)
+// Shared site behavior — nav scroll, mobile menu, fade-in, hero rotation, language toggle
 
 (function () {
+    /* i18n for the handful of strings this file injects at runtime.
+       The EN and ES trees share this file; the page's <html lang> picks the set. */
+    const IS_ES = (document.documentElement.lang || 'en').toLowerCase().startsWith('es');
+    const STRINGS = IS_ES ? {
+        sending: 'Enviando…',
+        incomplete: 'Por favor complete los campos obligatorios.',
+        success: 'Gracias. Castillo Arquitectos se pondrá en contacto.',
+        failure: 'Algo salió mal. Escríbanos a info@castilloarquitectos.com.'
+    } : {
+        sending: 'Sending…',
+        incomplete: 'Please complete the required fields.',
+        success: 'Thank you. Castillo Arquitectos will be in touch.',
+        failure: 'Something went wrong. Please email info@castilloarquitectos.com.'
+    };
+
     const heroVideo = document.querySelector('.hero__video');
     if (heroVideo) {
         heroVideo.playbackRate = 0.5;
@@ -191,11 +206,12 @@
         }, 3500);
     }
 
-    // Language toggle (visual mock — no actual page swap yet)
-    document.querySelectorAll('.nav__lang-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-            document.querySelectorAll('.nav__lang-btn').forEach(b => b.classList.remove('nav__lang-btn--active'));
-            btn.classList.add('nav__lang-btn--active');
+    /* Language toggle: the EN/ES controls are real links to the mirrored page
+       (/page.html <-> /es/page.html), so navigation is handled by the browser.
+       Only guard against clicking the language you are already on. */
+    document.querySelectorAll('.nav__lang-btn').forEach(link => {
+        link.addEventListener('click', e => {
+            if (link.classList.contains('nav__lang-btn--active')) e.preventDefault();
         });
     });
 
@@ -489,12 +505,12 @@
             const invalid = form.querySelector(':invalid');
             if (invalid) {
                 invalid.focus();
-                say('Please complete the required fields.', 'error');
+                say(STRINGS.incomplete, 'error');
                 return;
             }
 
             if (submit) submit.disabled = true;
-            if (submitText) submitText.textContent = 'Sending…';
+            if (submitText) submitText.textContent = STRINGS.sending;
 
             try {
                 const body = new URLSearchParams(new FormData(form)).toString();
@@ -505,10 +521,10 @@
                 });
                 if (!res.ok) throw new Error(res.status);
                 form.reset();
-                say(form.dataset.successMessage || 'Thank you. Castillo Arquitectos will be in touch.');
+                say(form.dataset.successMessage || STRINGS.success);
                 if (submit) submit.hidden = true;
             } catch (err) {
-                say('Something went wrong. Please email info@castilloarquitectos.com.', 'error');
+                say(STRINGS.failure, 'error');
                 if (submit) submit.disabled = false;
                 if (submitText) submitText.textContent = originalText;
             }
