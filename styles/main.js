@@ -297,6 +297,32 @@
         // for the mobile expand only; desktop keeps its original curve.
         const smootherstep = (t) => t * t * t * (t * (t * 6 - 15) + 10);
 
+        // --- write skipping -------------------------------------------------
+        // Both stages get visited every scroll frame, but only one is ever
+        // animating; the other just recomputes the same clamped values. Even
+        // assigning an identical string to .style.transform dirties the
+        // element, so cache the last value written and bail when unchanged.
+        // This drops the off-screen stage (and any idle frame) to zero work,
+        // with byte-identical output.
+        const setTransform = (d, key, value) => {
+            const cacheKey = key + 'Tf';
+            if (d[cacheKey] === value) return;
+            d[cacheKey] = value;
+            d[key].style.transform = value;
+        };
+
+        // --p drives color-mix() on the copy, so each write costs a style
+        // recalc. Quantising it on mobile was tried to cut those recalcs, but
+        // interleaved tracing showed no measurable win and it risks visible
+        // banding in the colour fade — so this stays at full precision and
+        // only skips genuinely redundant writes.
+        const setProgress = (stage, d, p) => {
+            const q = p.toFixed(3);
+            if (d.lastP === q) return;
+            d.lastP = q;
+            stage.style.setProperty('--p', q);
+        };
+
         // Two-phase update: read every stage's rect first, then write all
         // style mutations after. Reading stage2's rect *after* stage1 had
         // already written new transforms/custom-properties would force a
@@ -329,12 +355,14 @@
                     const p2 = Math.max(0, Math.min(1, (raw - phase1End) / (1 - phase1End)));
                     const p = d.isMobile ? smootherstep(p1) : smoothstep(p1);
                     const s = 1 + (d.scale - 1) * p;
-                    d.media.style.transform =
-                        `translate3d(${d.tx * p}px, ${d.ty * p}px, 0) scale(${s})`;
-                    stage.style.setProperty('--p', p.toFixed(3));
+
+                    setTransform(d, 'media',
+                        `translate3d(${d.tx * p}px, ${d.ty * p}px, 0) scale(${s})`);
+                    setProgress(stage, d, p);
 
                     if (d.copy) {
-                        d.copy.style.transform = `translate3d(${d.copyTx * p}px, ${d.copyTy * p}px, 0)`;
+                        setTransform(d, 'copy',
+                            `translate3d(${d.copyTx * p}px, ${d.copyTy * p}px, 0)`);
                     }
 
                     if (d.trackTravel > 0) {
@@ -344,15 +372,15 @@
                         const translateX = d.reverse
                             ? -d.trackTravel * (1 - sp2)
                             : -d.trackTravel * sp2;
-                        d.track.style.transform = `translate3d(${translateX}px, 0, 0)`;
+                        setTransform(d, 'track', `translate3d(${translateX}px, 0, 0)`);
                     }
                 } else {
                     const tNorm = Math.max(0, Math.min(1, (raw - 0.08) / 0.92));
                     const p = smoothstep(tNorm);
                     const s = 1 + (d.scale - 1) * p;
-                    d.media.style.transform =
-                        `translate3d(${d.tx * p}px, ${d.ty * p}px, 0) scale(${s})`;
-                    stage.style.setProperty('--p', p.toFixed(3));
+                    setTransform(d, 'media',
+                        `translate3d(${d.tx * p}px, ${d.ty * p}px, 0) scale(${s})`);
+                    setProgress(stage, d, p);
                 }
             }
         };

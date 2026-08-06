@@ -717,20 +717,6 @@ button { font: inherit; cursor: pointer; }
     align-items: start;
 }
 
-/* Single-column statement with the drawing inline between the copy — image
-   sits after the second paragraph on desktop (broken up mid-read instead of
-   sitting beside it), but moves back above all the copy on mobile. */
-.statement-layout--split {
-    max-width: 760px;
-    display: flex;
-    flex-direction: column;
-    gap: clamp(2rem, 5vw, 3rem);
-}
-
-.statement-layout--split .statement-layout__drawing { order: 2; }
-.statement-layout--split .statement--top { order: 1; }
-.statement-layout--split .statement--bottom { order: 3; }
-
 .statement-layout__drawing {
     margin: 0;
     align-self: start;
@@ -758,7 +744,9 @@ button { font: inherit; cursor: pointer; }
 
 .statement p:last-child { margin-bottom: 0; }
 
-.statement--top p:first-child::first-letter {
+/* Scoped to the About statement so the project pages' .statement blocks, which
+   also open on a <p>, don't pick up a drop cap. */
+.statement-layout .statement p:first-child::first-letter {
     font-family: var(--f-display);
     font-weight: 300;
     font-size: 3rem;
@@ -781,11 +769,6 @@ button { font: inherit; cursor: pointer; }
     .statement {
         max-width: 100%;
     }
-
-    /* Drawing goes back above all the copy on mobile. */
-    .statement-layout--split .statement-layout__drawing { order: 0; }
-    .statement-layout--split .statement--top { order: 1; }
-    .statement-layout--split .statement--bottom { order: 2; }
 }
 
 .founder {
@@ -1803,7 +1786,11 @@ body.page-category .section--white .projects-stack {
    has the phase columns' copy directly above it, so it clears them rather than
    pulling up over the text. */
 .motif--mirror {
-    margin: 30px auto -140px -120px;
+    margin: 30px auto -140px 0;
+    /* Reaches the full 70px pull only when the viewport is wide enough that the
+       centred wrap leaves room beside it; otherwise it can claim no more than
+       the wrap's own padding, or the leading plate is cut off by the window. */
+    margin-left: max(-70px, calc(-2rem - max(0px, (100vw - 1280px) / 2)));
 }
 
 .motif--mirror .motif__item--above  { left: 4.5%; transform: rotate(-7deg); }
@@ -1823,11 +1810,14 @@ body.page-category .section--white .projects-stack {
 
 /* Only while the form is genuinely two-column (>1024px) does the arc have room
    to ride up into the gap beside the panel. Offset via margins, not transform —
-   .fade owns the transform on this element. */
+   .fade owns the transform on this element. The px values are what the design
+   asks for at full width; the percentage caps only bite on narrower desktops,
+   where they keep the arc from riding over the form panel itself. */
 @media (min-width: 1025px) {
     .motif--form {
+        width: min(430px, 80%);
         margin-top: calc(clamp(1.9rem, 3.5vw, 2.9rem) - 100px);
-        margin-left: 100px;
+        margin-left: min(120px, 22%);
     }
 }
 
@@ -1837,12 +1827,13 @@ body.page-category .section--white .projects-stack {
     .motif { margin: -90px -2.5rem -90px auto; }
     .motif--mirror { margin: 20px auto -80px -2.5rem; }
     .motif--lifted { margin-top: -110px; }
-    .motif--form { margin: 2rem auto 0.75rem 0; }
 }
 
 @media (max-width: 1024px) {
     .motif { margin-right: -1.5rem; }
     .motif--mirror { margin-right: auto; margin-left: -1.5rem; }
+    /* Form has stacked to one column — the arc returns to normal flow. */
+    .motif--form { margin: 2rem auto 0.75rem 0; }
 }
 
 /* Mobile: no corner to tuck into, so the arcs centre — and run half again as
@@ -1851,6 +1842,13 @@ body.page-category .section--white .projects-stack {
     .motif { margin: 0 auto; width: min(300px, 100%); }
     .motif--mirror { margin: 0 auto; }
     .motif--form { margin: 1.75rem auto 0.5rem; width: min(345px, 100%); }
+}
+
+/* The category-page arcs sit 50px further out. Held to wide desktop: below
+   ~1200px the corner pull is already flush to the viewport, so the extra 50px
+   would spill off-screen rather than read as a deeper tuck. */
+@media (min-width: 1200px) {
+    .motif { margin-right: -170px; }
 }
 
 /* Numbered project list (community) */
@@ -4243,10 +4241,17 @@ section.section--entries-editorial:not(#entries) + .site-bottom .cta-strip--spli
         padding: 0.85rem 1.6rem;
         font-size: 9.5px;
     }
+    /* Fixed padding, deliberately NOT the calc(var(--pe)) form the desktop
+       rule uses: --pe changes on every scroll frame during the expand, and
+       animating padding forces a layout pass each time. The box just stays
+       at its (already fatter) resting size on mobile; only its colours ramp,
+       which is paint-only. See the perf note at the end of this file. */
     .entry-stage .entry__link {
-        padding-block: calc(0.8rem + var(--pe) * 0.35rem);
-        padding-inline: calc(1.15rem + var(--pe) * 0.63rem);
+        padding-block: 0.8rem;
+        padding-inline: 1.15rem;
         font-size: 10px;
+        transform: none;
+        will-change: auto;
     }
     .h-panel__btn {
         padding: 1.05rem 2rem;
