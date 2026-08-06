@@ -1814,11 +1814,14 @@ body.page-category .section--white .projects-stack {
    asks for at full width; the percentage caps only bite on narrower desktops,
    where they keep the arc from riding over the form panel itself. */
 @media (min-width: 1025px) {
-    .motif--form {
+    .motif.motif--form {
         width: min(430px, 80%);
         margin-top: calc(clamp(1.9rem, 3.5vw, 2.9rem) - 100px);
-        margin-left: min(120px, 22%);
+        margin-left: min(98px, 24%);
     }
+
+    /* Residential's form arc sits 20px further right than the other forms. */
+    .motif.motif--form.motif--nudged { margin-left: min(118px, 28%); }
 }
 
 @media (max-width: 1100px) {
@@ -1833,7 +1836,7 @@ body.page-category .section--white .projects-stack {
     .motif { margin-right: -1.5rem; }
     .motif--mirror { margin-right: auto; margin-left: -1.5rem; }
     /* Form has stacked to one column — the arc returns to normal flow. */
-    .motif--form { margin: 2rem auto 0.75rem 0; }
+    .motif.motif--form { margin: 2rem auto 0.75rem 0; }
 }
 
 /* Mobile: no corner to tuck into, so the arcs centre — and run half again as
@@ -1841,7 +1844,7 @@ body.page-category .section--white .projects-stack {
 @media (max-width: 760px) {
     .motif { margin: 0 auto; width: min(300px, 100%); }
     .motif--mirror { margin: 0 auto; }
-    .motif--form { margin: 1.75rem auto 0.5rem; width: min(345px, 100%); }
+    .motif.motif--form { margin: 1.75rem auto 0.5rem; width: min(345px, 100%); }
 }
 
 /* The category-page arcs sit 50px further out. Held to wide desktop: below
