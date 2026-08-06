@@ -348,9 +348,13 @@
             for (const { stage, d, raw } of frames) {
                 if (d.track) {
                     // Phase 1: image expansion (0 → phase1End). Phase 2: horizontal track translation.
-                    // Desktop keeps the original 0.25; mobile spreads the zoom over a bit
-                    // more scroll distance so it reads as easing in rather than snapping.
-                    const phase1End = d.isMobile ? 0.44 : 0.25;
+                    // Desktop keeps the original 0.25. Mobile had been stretched to 0.44 to
+                    // make the zoom feel gentler, but that just made it drag — it read as
+                    // slow, which in turn made the pan that follows feel rushed. Pulling it
+                    // back to 0.20 makes the expand ~2.4x quicker in scroll distance, and
+                    // hands the freed scroll to phase 2 (0.56 -> 0.80 of the pin), so the
+                    // pan gets more room rather than less.
+                    const phase1End = d.isMobile ? 0.20 : 0.25;
                     const p1 = Math.max(0, Math.min(1, (raw - 0.03) / (phase1End - 0.03)));
                     const p2 = Math.max(0, Math.min(1, (raw - phase1End) / (1 - phase1End)));
                     const p = d.isMobile ? smootherstep(p1) : smoothstep(p1);
