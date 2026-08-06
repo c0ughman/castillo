@@ -206,6 +206,13 @@
     if (stages.length) {
         const data = new Map();
 
+        // Fraction of the distance to screen-centre that the mobile teaser
+        // caption glides vertically during the expand. 1 = all the way to
+        // the middle, which read as too much movement. Once pinned the
+        // caption sits around 22% of viewport height, so 0.25 drifts it
+        // gently down to ~29% rather than travelling to 50%.
+        const COPY_GLIDE = 0.25;
+
         const measure = (stage) => {
             const pin = stage.querySelector('.entry-stage__pin');
             const media = stage.querySelector('.entry__media');
@@ -250,8 +257,12 @@
                     const cRect = copy.getBoundingClientRect();
                     const initCcx = (cRect.left - pinRect.left) + cRect.width / 2;
                     const initCcy = (cRect.top  - pinRect.top)  + cRect.height / 2;
+                    // Travel only part of the way toward screen-centre —
+                    // gliding the caption the full distance read as too much
+                    // movement. Horizontal still centres fully (it's a small
+                    // correction); vertical stops well short of the middle.
                     copyTx = vw / 2 - initCcx;
-                    copyTy = vh / 2 - initCcy;
+                    copyTy = (vh / 2 - initCcy) * COPY_GLIDE;
                 }
             }
 
@@ -270,6 +281,7 @@
                 // little glitchy; less scale-per-pixel-scrolled reads
                 // smoother without changing the desktop feel at all.
                 isMobile: vw <= 1024,
+                vh,
                 // "Cover" scale — fills both axes. A width-only scale left
                 // portrait/mobile viewports (tall relative to the media's
                 // own box) with dead space above and below the image.
@@ -280,6 +292,10 @@
         };
 
         const smoothstep = (t) => t * t * (3 - 2 * t);
+        // Quintic "smootherstep" — zero 1st *and* 2nd derivative at both
+        // ends, so the zoom eases in/out more gently than smoothstep. Used
+        // for the mobile expand only; desktop keeps its original curve.
+        const smootherstep = (t) => t * t * t * (t * (t * 6 - 15) + 10);
 
         // Two-phase update: read every stage's rect first, then write all
         // style mutations after. Reading stage2's rect *after* stage1 had
@@ -292,7 +308,13 @@
                 const d = data.get(stage);
                 if (!d) continue;
                 const rect = stage.getBoundingClientRect();
-                const pinScroll = rect.height - window.innerHeight;
+                // Use the viewport height captured at measure time rather than
+                // a live window.innerHeight: on mobile the URL bar collapsing
+                // mid-scroll changes innerHeight while the stage's own height
+                // (sized in vh) does not, so reading it live made pinScroll —
+                // and therefore the whole animation's progress — jump. Cached
+                // here, refreshed on resize.
+                const pinScroll = rect.height - d.vh;
                 if (pinScroll <= 0) continue;
                 frames.push({ stage, d, raw: Math.max(0, Math.min(1, -rect.top / pinScroll)) });
             }
@@ -302,10 +324,10 @@
                     // Phase 1: image expansion (0 → phase1End). Phase 2: horizontal track translation.
                     // Desktop keeps the original 0.25; mobile spreads the zoom over a bit
                     // more scroll distance so it reads as easing in rather than snapping.
-                    const phase1End = d.isMobile ? 0.34 : 0.25;
+                    const phase1End = d.isMobile ? 0.44 : 0.25;
                     const p1 = Math.max(0, Math.min(1, (raw - 0.03) / (phase1End - 0.03)));
                     const p2 = Math.max(0, Math.min(1, (raw - phase1End) / (1 - phase1End)));
-                    const p = smoothstep(p1);
+                    const p = d.isMobile ? smootherstep(p1) : smoothstep(p1);
                     const s = 1 + (d.scale - 1) * p;
                     d.media.style.transform =
                         `translate3d(${d.tx * p}px, ${d.ty * p}px, 0) scale(${s})`;

@@ -1796,6 +1796,24 @@ body.page-category .section--white .projects-stack {
 /* Community sits 20px higher than residential */
 .motif--lifted { margin-top: -170px; }
 
+/* Mirrored twin, anchored bottom-left instead of top-right. The flip is done by
+   mirroring each plate's position and tilt rather than scaleX-ing the box: the
+   container's transform belongs to .fade, which would override it (and would
+   flip the photographs themselves besides). Unlike the top-right arc, this one
+   has the phase columns' copy directly above it, so it clears them rather than
+   pulling up over the text. */
+.motif--mirror {
+    margin: 30px auto -140px -120px;
+}
+
+.motif--mirror .motif__item--above  { left: 4.5%; transform: rotate(-7deg); }
+.motif--mirror .motif__item--corner { left: 25%;  transform: rotate(0deg); }
+.motif--mirror .motif__item--left   { left: 63%;  transform: rotate(7deg); }
+
+.motif--mirror:hover .motif__item--above  { transform: rotate(-9deg) translate(-3px, -3px); }
+.motif--mirror:hover .motif__item--corner { transform: rotate(0deg)  translate(-2px, 2px); }
+.motif--mirror:hover .motif__item--left   { transform: rotate(9deg)  translate(3px, 3px); }
+
 /* In a form column there is no body of copy to tuck the arc into, so it drops
    the corner pull and sits in normal flow under the contact details. */
 .motif--form {
@@ -1803,21 +1821,36 @@ body.page-category .section--white .projects-stack {
     margin: clamp(1.9rem, 3.5vw, 2.9rem) auto clamp(0.5rem, 1.5vw, 1rem) 0;
 }
 
+/* Only while the form is genuinely two-column (>1024px) does the arc have room
+   to ride up into the gap beside the panel. Offset via margins, not transform —
+   .fade owns the transform on this element. */
+@media (min-width: 1025px) {
+    .motif--form {
+        margin-top: calc(clamp(1.9rem, 3.5vw, 2.9rem) - 100px);
+        margin-left: 100px;
+    }
+}
+
 @media (max-width: 1100px) {
-    /* The right pull reclaims the wrap's padding, so it has to track it —
+    /* The corner pull reclaims the wrap's padding, so it has to track it —
        any more and the arc pushes the page into a horizontal scroll. */
     .motif { margin: -90px -2.5rem -90px auto; }
+    .motif--mirror { margin: 20px auto -80px -2.5rem; }
     .motif--lifted { margin-top: -110px; }
     .motif--form { margin: 2rem auto 0.75rem 0; }
 }
 
 @media (max-width: 1024px) {
     .motif { margin-right: -1.5rem; }
+    .motif--mirror { margin-right: auto; margin-left: -1.5rem; }
 }
 
+/* Mobile: no corner to tuck into, so the arcs centre — and run half again as
+   large, since at this width they otherwise read as thumbnails. */
 @media (max-width: 760px) {
-    .motif { margin: 0 auto; width: 200px; }
-    .motif--form { margin: 1.75rem auto 0.5rem; width: 230px; }
+    .motif { margin: 0 auto; width: min(300px, 100%); }
+    .motif--mirror { margin: 0 auto; }
+    .motif--form { margin: 1.75rem auto 0.5rem; width: min(345px, 100%); }
 }
 
 /* Numbered project list (community) */
@@ -2992,6 +3025,9 @@ section.section--entries-editorial:not(#entries) + .site-bottom .cta-strip--spli
        sync with the same expand progress driving the image. */
     .entry-stage .entry__copy {
         text-align: center;
+        /* Promoted alongside .entry__media — main.js transforms both every
+           scroll frame during the expand. */
+        will-change: transform;
     }
 
     .entry-stage .entry__link {
@@ -3400,6 +3436,21 @@ section.section--entries-editorial:not(#entries) + .site-bottom .cta-strip--spli
     .entry-stage__inner {
         isolation: isolate;
     }
+
+    /* Reverse (Residential) rail DOM order is: cta, split, intro, teaser —
+       the teaser comes LAST, so as its image scales up and spills past its
+       own box it paints over the intro panel ("Of place, of craft.") to its
+       left, clipping through the copy. (The forward rail doesn't have this:
+       there the teaser is first, so later panels naturally cover it.)
+       Order the stacking explicitly instead of relying on DOM order, so the
+       panels always sit above the expanding image. */
+    .entry-stage--reverse-h .entry-stage__inner {
+        z-index: 0;
+    }
+
+    .entry-stage--reverse-h .h-panel {
+        z-index: 1;
+    }
 }
 
 /* Intro panels: flat warm-white. CTA panels: white→beige gradient (beige left, white right) */
@@ -3529,6 +3580,15 @@ section.section--entries-editorial:not(#entries) + .site-bottom .cta-strip--spli
 @media (max-width: 1024px) {
     .h-panel--intro .h-panel__inner {
         text-align: center;
+    }
+
+    /* CTA panel keeps its horizontal edge-alignment (justify-content), but
+       vertically it was bottom-pinned (align-items: flex-end + a bottom
+       pad) which on a tall phone panel dumped it right at the floor.
+       Centre it on the Y axis instead. */
+    .h-panel--cta {
+        align-items: center;
+        padding-bottom: 0;
     }
 }
 
