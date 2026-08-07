@@ -30,11 +30,20 @@
             setTimeout(revealVideo, 3000);
         }
 
-        // Nav + hero text all reveal together 2s after video starts
+        // Nav + hero text reveal together, on a fixed timer from page load.
+        // Deliberately NOT gated on the video: the hero is the page's largest
+        // contentful paint, and hanging it off a network event means a slow
+        // connection leaves the viewport blank (and Lighthouse records no LCP
+        // at all). Tune INTRO_DELAY to retime the reveal — keep it well under
+        // 2500ms, which is where LCP stops counting as "good".
+        const INTRO_DELAY = 1200;
         const heroIntroEls = document.querySelectorAll('.hero-intro');
         const navIntroEl = document.querySelector('.nav--intro-hidden');
+        let introFired = false;
 
         const triggerIntro = () => {
+            if (introFired) return;
+            introFired = true;
             if (navIntroEl) {
                 navIntroEl.classList.remove('nav--intro-hidden');
                 navIntroEl.style.pointerEvents = '';
@@ -42,15 +51,7 @@
             heroIntroEls.forEach(el => el.classList.add('is-in'));
         };
 
-        const scheduleIntro = () => setTimeout(triggerIntro, 2200);
-
-        if (heroVideo.readyState >= 2) {
-            scheduleIntro();
-        } else {
-            heroVideo.addEventListener('canplay', scheduleIntro, { once: true });
-            // Hard fallback at 4s in case video never fires canplay
-            setTimeout(() => { if (navIntroEl && navIntroEl.classList.contains('nav--intro-hidden')) triggerIntro(); }, 4000);
-        }
+        setTimeout(triggerIntro, INTRO_DELAY);
 
         // Parallax — translate the whole hero__bg at 40% of scroll speed
         const heroBg = heroVideo.closest('.hero__bg') || heroVideo.parentElement;

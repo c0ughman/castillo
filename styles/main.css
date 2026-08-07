@@ -476,6 +476,17 @@ button { font: inherit; cursor: pointer; }
     z-index: 0;
 }
 
+/* Paper ground under the hero footage. All three hero clips open on blank
+   paper, so this matches frame one and there is nothing to see through while
+   the video decodes. Cheaper than a poster image — no extra request. */
+.hero__bg:has(.hero__video) {
+    background-color: #f6f2ec;
+}
+
+.hero--home .hero__bg:has(.hero__video) {
+    background-color: #fdfdfd;
+}
+
 .hero__video {
     position: absolute;
     inset: 0;
