@@ -2513,7 +2513,9 @@ body.page-category .section--white .projects-stack {
     border-top: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-.footer__logo img { height: 22px; }
+/* width:auto so the intrinsic width/height attributes on the <img> only supply
+   an aspect ratio, and never force the asset's full pixel width. */
+.footer__logo img { height: 22px; width: auto; }
 
 .footer__copy {
     font-size: 10px;
