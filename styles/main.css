@@ -556,14 +556,17 @@ button { font: inherit; cursor: pointer; }
     margin: 1.1rem 0 0;
     padding-top: 0;
     text-align: left;
-    font-size: clamp(10.5px, 1.08vw, 11.25px);
-    max-width: min(22.5rem, 100%);
-    line-height: 1.74;
-    color: rgba(245, 240, 235, 0.9);
-    font-weight: 300;
+    /* Sized and weighted between the old home treatment and the category
+       heroes (.hero__sub, 13.5px/400/#fff) — closer to those, which read
+       far better over light footage. */
+    font-size: clamp(12px, 1.28vw, 12.75px);
+    max-width: min(24rem, 100%);
+    line-height: 1.7;
+    color: var(--c-warm-white);
+    font-weight: 400;
     text-shadow:
-        0 1px 20px rgba(0, 0, 0, 0.35),
-        0 1px 2px rgba(0, 0, 0, 0.12);
+        0 2px 20px rgba(0, 0, 0, 0.55),
+        0 1px 3px rgba(0, 0, 0, 0.20);
 }
 
 .hero--home .hero__actions {
@@ -2630,19 +2633,6 @@ body.page-category .section--white .projects-stack {
     );
 }
 
-/* Home sits softer — the copy block is tight to the corner, so the
-   corner reach can be shorter and lighter than on category pages. */
-.hero--home::after {
-    background-image: radial-gradient(
-        ellipse 78% 66% at 0% 100%,
-        rgba(12, 39, 53, 0.42) 0%,
-        rgba(12, 39, 53, 0.31) 24%,
-        rgba(12, 39, 53, 0.17) 48%,
-        rgba(12, 39, 53, 0.06) 70%,
-        rgba(12, 39, 53, 0) 86%
-    );
-}
-
 /* ═══════════════════════════════════════════
    Responsive
    ═══════════════════════════════════════════ */
@@ -2728,17 +2718,6 @@ body.page-category .section--white .projects-stack {
             rgba(12, 39, 53, 0.20) 46%,
             rgba(12, 39, 53, 0.08) 68%,
             rgba(12, 39, 53, 0) 86%
-        );
-    }
-
-    .hero--home::after {
-        background-image: radial-gradient(
-            ellipse 140% 62% at 0% 100%,
-            rgba(12, 39, 53, 0.34) 0%,
-            rgba(12, 39, 53, 0.25) 26%,
-            rgba(12, 39, 53, 0.14) 50%,
-            rgba(12, 39, 53, 0.05) 72%,
-            rgba(12, 39, 53, 0) 88%
         );
     }
 }
