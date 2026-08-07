@@ -2608,6 +2608,28 @@ body.page-category .section--white .projects-stack {
     z-index: 1;
 }
 
+/* Bottom-up navy vignette — lifts the white hero copy off the video.
+   Anchored to the section, not .hero__bg, so it stays put while the
+   oversized bg parallaxes. Sits above the video (z 0/1), below the
+   copy (.hero__content z 4, .hero__home-shell z 10). */
+.hero--home::after,
+.hero--page::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+    background-image: linear-gradient(
+        to top,
+        rgba(12, 39, 53, 0.58) 0%,
+        rgba(12, 39, 53, 0.46) 12%,
+        rgba(12, 39, 53, 0.30) 26%,
+        rgba(12, 39, 53, 0.16) 40%,
+        rgba(12, 39, 53, 0.06) 52%,
+        rgba(12, 39, 53, 0) 64%
+    );
+}
+
 /* ═══════════════════════════════════════════
    Responsive
    ═══════════════════════════════════════════ */
@@ -2680,6 +2702,20 @@ body.page-category .section--white .projects-stack {
         top: auto;
         bottom: calc(1.5rem + env(safe-area-inset-bottom, 0px));
         left: max(1rem, env(safe-area-inset-left, 0px));
+    }
+
+    /* Copy wraps taller on narrow screens — let the vignette reach higher */
+    .hero--home::after,
+    .hero--page::after {
+        background-image: linear-gradient(
+            to top,
+            rgba(12, 39, 53, 0.60) 0%,
+            rgba(12, 39, 53, 0.50) 16%,
+            rgba(12, 39, 53, 0.34) 32%,
+            rgba(12, 39, 53, 0.18) 48%,
+            rgba(12, 39, 53, 0.07) 62%,
+            rgba(12, 39, 53, 0) 76%
+        );
     }
 }
 
